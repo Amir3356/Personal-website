@@ -61,7 +61,12 @@ export default function SectionHeading({ kicker, title, align = "left" }: Props)
         className="sh-title invisible font-display text-4xl font-bold tracking-tight [&_.sh-word]:inline-block sm:text-5xl lg:text-6xl"
         style={{ overflow: "hidden" }}
       >
-        {title}
+        {/* "\n" in the title becomes a hard line break */}
+        {title.split("\n").map((line, i) => (
+          <span key={i} className="block">
+            {line}
+          </span>
+        ))}
       </h2>
     </div>
   );

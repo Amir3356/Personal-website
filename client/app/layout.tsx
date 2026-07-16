@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Syne, Space_Grotesk, Geist_Mono } from "next/font/google";
+import { Figtree, Space_Grotesk, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const syne = Syne({
-  variable: "--font-syne",
+const figtree = Figtree({
+  variable: "--font-figtree",
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const grotesk = Space_Grotesk({
@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${grotesk.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${figtree.variable} ${grotesk.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="noise min-h-full flex flex-col">{children}</body>
     </html>

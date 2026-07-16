@@ -13,7 +13,7 @@
   --color-cyan-neon: #22d3ee;
 
   /* ── Typography ──────────────────────────────────────── */
-  --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
@@ -119,6 +119,13 @@ html.lenis body {
 /* SplitText lines mask their children during reveal */
 .line-mask .line {
   overflow: hidden;
+}
+
+/* Typed.js blinking caret in the hero heading */
+.typed-cursor {
+  color: var(--color-cyan-neon);
+  font-weight: 400;
+  -webkit-text-fill-color: var(--color-cyan-neon);
 }
 
 /* Hide native cursor only when the custom one is active */

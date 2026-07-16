@@ -114,13 +114,13 @@ export default function About() {
             </blockquote>
           </div>
 
-          {/* Values */}
-          <div className="grid gap-5 sm:grid-cols-2">
+          {/* Values: auto-rows-fr keeps every card the same height */}
+          <div className="grid auto-rows-fr gap-5 sm:grid-cols-2">
             {about.values.map((value) => (
               <div
                 key={value.title}
                 data-cursor="hover"
-                className="value-card group rounded-2xl border border-line/60 bg-surface/50 p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-violet-neon/50 hover:bg-elevate"
+                className="value-card group flex h-full flex-col rounded-2xl border border-line/60 bg-surface/50 p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-violet-neon/50 hover:bg-elevate"
               >
                 <span className="inline-grid h-11 w-11 place-items-center rounded-xl border border-line/70 bg-void font-mono text-base text-cyan-neon transition-all duration-500 group-hover:scale-110 group-hover:border-cyan-neon/60">
                   {value.icon}

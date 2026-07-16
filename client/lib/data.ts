@@ -19,7 +19,8 @@ export const site = {
 
 export const hero = {
   headingStart: "Building performant and ",
-  headingHighlight: "scalable products.",
+  /** Rotated by the typewriter effect in the hero heading */
+  headingHighlights: ["scalable products.", "secure products."],
   intro:
     "Hi, I'm Abdisa Ketema, a full-stack developer focused on React, Next.js, TypeScript and Expo. I build scalable, high-performance products with clean code and great user experience.",
   /** Drop your CV file at client/public/cv.pdf (or change this path). */
@@ -36,7 +37,8 @@ export const navLinks = [
 ];
 
 export const about = {
-  title: "Coding with purpose, teaching with passion.",
+  // "\n" forces a line break in the section heading
+  title: "Coding with purpose,\nteaching with passion.",
   paragraphs: [
     "I'm a skilled and passionate full-stack developer who helps businesses get a fresh, creative start through well-built web applications. I'm detail-oriented, committed, and strong in problem-solving, time management, and organization.",
     "I've developed and deployed real-world web applications using clean coding principles and test-driven development. Beyond development, I teach programming on the @ethiopandatech and @tntethiopia YouTube channels.",
@@ -194,24 +196,24 @@ export const approach = [
 
 export const experience = [
   {
-    period: "2024 — Present",
-    role: "Creative Developer",
-    company: "BetwoTech",
+    period: "Summer 2026",
+    role: "Contributor",
+    company: "Paxpia Social Media Platform",
     description:
-      "Leading interactive frontend work — 3D product experiences, design systems and motion language across client projects.",
+      "Contributed to the Paxpia social media platform — gaining hands-on experience in system architecture and database design on a real, growing product.",
   },
   {
-    period: "2022 — 2024",
-    role: "Full-Stack Developer",
-    company: "Freelance",
+    period: "2026 · 1 month",
+    role: "Frontend Web Developer",
+    company: "Yanol Tech",
     description:
-      "Shipped 20+ products end-to-end for startups: from database schema to shader — owning performance, DX and polish.",
+      "Built modern, responsive user interfaces — translating designs into clean, reusable components with attention to detail and performance.",
   },
   {
-    period: "2021 — 2022",
-    role: "Frontend Developer",
-    company: "Early Career",
+    period: "2026 · 2 months",
+    role: "Full-Stack Web Developer",
+    company: "Arriva System Solution",
     description:
-      "Cut my teeth building production React apps, falling in love with animation and the craft of interface engineering.",
+      "Worked across the stack — implementing features from database to UI and strengthening my skills in building complete, production-ready web applications.",
   },
 ];

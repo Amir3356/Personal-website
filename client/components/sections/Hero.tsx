@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Typed from "typed.js";
 import { gsap, useGSAP, SplitText, onPreloaderDone } from "@/lib/gsap";
 import { site, hero } from "@/lib/data";
 import MagneticButton from "@/components/ui/MagneticButton";
@@ -14,22 +15,17 @@ const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
 
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
+  const typedEl = useRef<HTMLSpanElement>(null);
 
   useGSAP(
     () => {
-      const title = root.current?.querySelector(".hero-title");
+      // Only the static part is char-split; the highlight is live-typed
+      const title = root.current?.querySelector(".hero-title-static");
       if (!title) return;
 
       const split = SplitText.create(title, {
         type: "words,chars",
         charsClass: "hero-char",
-      });
-      // Gradient must live on each char: background-clip:text on a parent
-      // doesn't paint through SplitText's transformed child divs.
-      split.chars.forEach((char) => {
-        if ((char as HTMLElement).closest(".text-gradient")) {
-          (char as HTMLElement).classList.add("text-gradient");
-        }
       });
 
       gsap.set(root.current, { autoAlpha: 1 });
@@ -58,7 +54,23 @@ export default function Hero() {
           "-=0.7"
         );
 
-      const cleanup = onPreloaderDone(() => intro.play());
+      // Typewriter on the gradient highlight, starting once the static
+      // heading has typed itself in after the preloader.
+      let typed: Typed | null = null;
+      const cleanup = onPreloaderDone(() => {
+        intro.play();
+        if (typedEl.current) {
+          typed = new Typed(typedEl.current, {
+            strings: hero.headingHighlights,
+            typeSpeed: 55,
+            backSpeed: 35,
+            backDelay: 2000,
+            startDelay: 700,
+            loop: true,
+            smartBackspace: false,
+          });
+        }
+      });
 
       // Gentle perpetual float on the portrait
       gsap.to(".hero-photo-float", {
@@ -84,6 +96,7 @@ export default function Hero() {
 
       return () => {
         cleanup();
+        typed?.destroy();
         split.revert();
       };
     },
@@ -107,12 +120,17 @@ export default function Hero() {
         <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-20">
           {/* Copy */}
           <div>
-            <h1
-              className="hero-title font-display text-[clamp(2.1rem,3.9vw,3.9rem)] leading-[1.08] font-extrabold tracking-tight [&_.hero-char]:inline-block"
-              style={{ overflow: "hidden" }}
-            >
-              {hero.headingStart}
-              <span className="text-gradient">{hero.headingHighlight}</span>
+            {/* min-h reserves two lines so typing never shifts the content below */}
+            <h1 className="hero-title min-h-[2.3em] font-display text-[clamp(2.1rem,3.9vw,3.9rem)] leading-[1.08] font-extrabold tracking-tight [&_.hero-char]:inline-block">
+              <span
+                className="hero-title-static"
+                style={{ overflow: "hidden", display: "inline" }}
+              >
+                {hero.headingStart}
+              </span>
+              <span className="text-gradient">
+                <span ref={typedEl} />
+              </span>
             </h1>
 
             <p className="hero-fade mt-7 max-w-xl text-lg leading-relaxed text-muted">
@@ -136,7 +154,7 @@ export default function Hero() {
           </div>
 
           {/* Portrait */}
-          <div className="hero-photo relative mx-auto w-full max-w-xs sm:max-w-sm">
+          <div className="hero-photo relative mx-auto w-full max-w-[16rem] sm:max-w-[20rem]">
             <div className="hero-photo-float relative">
               {/* Glow ring */}
               <div
