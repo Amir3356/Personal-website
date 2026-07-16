@@ -20,7 +20,7 @@ export const site = {
 export const hero = {
   headingStart: "Building performant and ",
   /** Rotated by the typewriter effect in the hero heading */
-  headingHighlights: ["scalable products.", "secure products."],
+  headingHighlights: ["scalable products", "secure products"],
   intro:
     "Hi, I'm Abdisa Ketema, a full-stack developer focused on React, Next.js, TypeScript and Expo. I build scalable, high-performance products with clean code and great user experience.",
   /** Drop your CV file at client/public/cv.pdf (or change this path). */

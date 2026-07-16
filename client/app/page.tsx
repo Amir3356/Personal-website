@@ -1,6 +1,5 @@
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import Preloader from "@/components/ui/Preloader";
-import CustomCursor from "@/components/ui/CustomCursor";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
@@ -16,7 +15,6 @@ export default function Home() {
     <>
       <SmoothScroll />
       <Preloader />
-      <CustomCursor />
       <Navbar />
 
       <main className="flex-1">

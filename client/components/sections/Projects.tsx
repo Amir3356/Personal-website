@@ -4,7 +4,6 @@ import { useRef, type MouseEvent } from "react";
 import Image from "next/image";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { projects } from "@/lib/data";
-import SectionHeading from "@/components/ui/SectionHeading";
 
 type Project = (typeof projects)[number];
 
@@ -129,9 +128,11 @@ export default function Projects() {
       />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <SectionHeading kicker="02 — Projects" title="Projects with a pulse" />
+        <h2 className="text-center font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+          My Projects
+        </h2>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <ProjectCard key={project.title} project={project} />
           ))}

@@ -3,53 +3,12 @@
 import { useRef } from "react";
 import { gsap, useGSAP, SplitText } from "@/lib/gsap";
 import { about } from "@/lib/data";
-import SectionHeading from "@/components/ui/SectionHeading";
-
-/** Renders text, turning @handles into YouTube channel links. */
-function LinkedText({ text }: { text: string }) {
-  return (
-    <>
-      {text.split(/(@[A-Za-z0-9_]+)/g).map((part, i) =>
-        part.startsWith("@") ? (
-          <a
-            key={i}
-            href={`https://youtube.com/${part}`}
-            target="_blank"
-            rel="noreferrer"
-            className="text-cyan-neon underline-offset-4 transition-colors hover:text-violet-soft hover:underline"
-          >
-            {part}
-          </a>
-        ) : (
-          part
-        )
-      )}
-    </>
-  );
-}
 
 export default function About() {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
     () => {
-      // Paragraphs: line-by-line masked reveal
-      gsap.utils.toArray<HTMLElement>(".about-para").forEach((para) => {
-        const split = SplitText.create(para, {
-          type: "lines",
-          linesClass: "line",
-          mask: "lines",
-        });
-        gsap.set(para, { visibility: "visible" });
-        gsap.from(split.lines, {
-          yPercent: 110,
-          stagger: 0.08,
-          duration: 0.9,
-          ease: "power4.out",
-          scrollTrigger: { trigger: para, start: "top 85%" },
-        });
-      });
-
       // Quote: bar draws down, text slides in
       gsap.from(".about-quote-bar", {
         scaleY: 0,
@@ -90,23 +49,14 @@ export default function About() {
       />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <SectionHeading kicker="01 — About" title={about.title} />
-
-        <div className="grid items-start gap-14 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] lg:gap-20">
+        <div className="mt-14 grid items-start gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
           {/* Story + quote */}
           <div>
-            <div className="space-y-6">
-              {about.paragraphs.map((paragraph, i) => (
-                <p
-                  key={i}
-                  className="about-para invisible text-lg leading-relaxed text-ink/85"
-                >
-                  <LinkedText text={paragraph} />
-                </p>
-              ))}
-            </div>
+            <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+              Coding with purpose,<br />teaching with passion.
+            </h2>
 
-            <blockquote className="about-quote mt-12 flex gap-5">
+            <blockquote className="about-quote mt-8 flex gap-5">
               <span className="about-quote-bar w-1 shrink-0 rounded-full bg-linear-to-b from-violet-neon to-cyan-neon" />
               <p className="about-quote-text font-display text-xl leading-snug font-bold text-ink sm:text-2xl">
                 &ldquo;{about.quote}&rdquo;

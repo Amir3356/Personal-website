@@ -45,9 +45,9 @@ export default function Navbar() {
       ref={root}
       className="group/nav fixed inset-x-0 top-0 z-80 transition-colors [&.nav-scrolled]:glass"
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
-        {/* Desktop links */}
-        <ul className="hidden items-center gap-8 md:flex">
+      <nav className="mx-auto flex max-w-7xl items-center px-6 py-4 lg:px-10">
+        {/* Desktop links — centered in the bar */}
+        <ul className="mx-auto hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
               <button
@@ -61,9 +61,9 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Mobile toggle */}
+        {/* Mobile toggle — pinned right */}
         <button
-          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+          className="ml-auto flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
           aria-expanded={open}

@@ -128,15 +128,6 @@ html.lenis body {
   -webkit-text-fill-color: var(--color-cyan-neon);
 }
 
-/* Hide native cursor only when the custom one is active */
-@media (pointer: fine) {
-  .has-custom-cursor,
-  .has-custom-cursor a,
-  .has-custom-cursor button {
-    cursor: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-marquee-reverse,

@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { experience } from "@/lib/data";
-import SectionHeading from "@/components/ui/SectionHeading";
 
 export default function Experience() {
   const root = useRef<HTMLElement>(null);
@@ -45,8 +44,6 @@ export default function Experience() {
   return (
     <section ref={root} id="journey" className="relative py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <SectionHeading kicker="03 — Experiences" title="The road so far" />
-
         <div className="timeline relative mx-auto max-w-3xl">
           {/* Spine */}
           <div className="absolute top-0 bottom-0 left-[7px] w-px bg-line/70">
