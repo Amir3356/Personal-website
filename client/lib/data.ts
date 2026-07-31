@@ -22,7 +22,7 @@ export const hero = {
   /** Rotated by the typewriter effect in the hero heading */
   headingHighlights: ["scalable products", "secure products"],
   intro:
-    "Hi, I'm Abdisa Ketema, a full-stack developer focused on React, Next.js, TypeScript and Expo. I build scalable, high-performance products with clean code and great user experience.",
+    "Hi, I'm Amir Siraj, a full-stack developer who transforms ideas into powerful and scalable software solutions. I focus on building high-quality applications with clean code, strong performance, and intuitive user experiences.",
   /** Drop your CV file at client/public/cv.pdf (or change this path). */
   cvUrl: "/cv.pdf",
 };
