@@ -36,42 +36,7 @@ export const navLinks = [
   { label: "Contact Us", href: "#contact" },
 ];
 
-export const about = {
-  // "\n" forces a line break in the section heading
-  title: "Coding with purpose,\nteaching with passion.",
-  paragraphs: [
-    "I'm a skilled and passionate full-stack developer who helps businesses get a fresh, creative start through well-built web applications. I'm detail-oriented, committed, and strong in problem-solving, time management, and organization.",
-    "I've developed and deployed real-world web applications using clean coding principles and test-driven development. Beyond development, I teach programming on the @ethiopandatech and @tntethiopia YouTube channels.",
-  ],
-  quote:
-    "I aim to build products that feel good to use, scale reliably, and remain enjoyable to maintain as they grow",
-  values: [
-    {
-      icon: "</>",
-      title: "Clean Code",
-      description:
-        "I write clean, maintainable code that's easy to understand and extend.",
-    },
-    {
-      icon: "⚡",
-      title: "Performance",
-      description:
-        "Performance-first development to ensure fast load times and smooth UX.",
-    },
-    {
-      icon: "◎",
-      title: "Collaboration",
-      description:
-        "Strong communicator who works well with teams and stakeholders.",
-    },
-    {
-      icon: "✦",
-      title: "Innovation",
-      description:
-        "Always exploring new technologies to build better and smarter solutions.",
-    },
-  ],
-};
+export const about = {};
 
 export const marqueeWords = [
   "WebGL",

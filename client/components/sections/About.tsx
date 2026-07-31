@@ -1,42 +1,14 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, SplitText } from "@/lib/gsap";
+import { useGSAP } from "@/lib/gsap";
 import { about } from "@/lib/data";
 
 export default function About() {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
-    () => {
-      // Quote: bar draws down, text slides in
-      gsap.from(".about-quote-bar", {
-        scaleY: 0,
-        transformOrigin: "top",
-        duration: 0.9,
-        ease: "power3.inOut",
-        scrollTrigger: { trigger: ".about-quote", start: "top 85%" },
-      });
-      gsap.from(".about-quote-text", {
-        x: 40,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".about-quote", start: "top 85%" },
-      });
-
-      // Value cards
-      gsap.utils.toArray<HTMLElement>(".value-card").forEach((card, i) => {
-        gsap.from(card, {
-          y: 50,
-          opacity: 0,
-          duration: 0.8,
-          delay: (i % 2) * 0.12,
-          ease: "power3.out",
-          scrollTrigger: { trigger: card, start: "top 90%" },
-        });
-      });
-    },
+    () => {},
     { scope: root }
   );
 
@@ -49,42 +21,7 @@ export default function About() {
       />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="mt-14 grid items-start gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
-          {/* Story + quote */}
-          <div>
-            <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              Coding with purpose,<br />teaching with passion.
-            </h2>
-
-            <blockquote className="about-quote mt-8 flex gap-5">
-              <span className="about-quote-bar w-1 shrink-0 rounded-full bg-linear-to-b from-violet-neon to-cyan-neon" />
-              <p className="about-quote-text font-display text-xl leading-snug font-bold text-ink sm:text-2xl">
-                &ldquo;{about.quote}&rdquo;
-              </p>
-            </blockquote>
-          </div>
-
-          {/* Values: auto-rows-fr keeps every card the same height */}
-          <div className="grid auto-rows-fr gap-5 sm:grid-cols-2">
-            {about.values.map((value) => (
-              <div
-                key={value.title}
-                data-cursor="hover"
-                className="value-card group flex h-full flex-col rounded-2xl border border-line/60 bg-surface/50 p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-violet-neon/50 hover:bg-elevate"
-              >
-                <span className="inline-grid h-11 w-11 place-items-center rounded-xl border border-line/70 bg-void font-mono text-base text-cyan-neon transition-all duration-500 group-hover:scale-110 group-hover:border-cyan-neon/60">
-                  {value.icon}
-                </span>
-                <h3 className="mt-4 font-display text-lg font-bold">
-                  {value.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  {value.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <div className="mt-14"></div>
       </div>
     </section>
   );
