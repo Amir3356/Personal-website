@@ -182,9 +182,13 @@ export default function Hero() {
 
       {/* Scroll hint */}
       <div className="hero-fade absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 lg:block">
-        <div className="flex h-10 w-6 items-start justify-center rounded-full border border-line p-1.5">
+        <button
+          onClick={() => scrollToSection("#work")}
+          className="flex h-10 w-6 cursor-pointer items-start justify-center rounded-full border border-line p-1.5 transition-colors hover:border-cyan-neon/60"
+          aria-label="Scroll to projects"
+        >
           <div className="h-2 w-1 animate-bounce rounded-full bg-cyan-neon" />
-        </div>
+        </button>
       </div>
     </section>
   );

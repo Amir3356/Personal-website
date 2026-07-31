@@ -81,7 +81,6 @@ export const projects = [
     description:
       "A secure school election platform with candidate management, one-vote-per-student integrity and instant, transparent result tallies.",
     tags: ["Laravel", "PHP", "JavaScript"],
-    category: "EdTech",
     image: "/images/projects/school-voting-system.jpg",
     gradient: "from-violet-600/60 via-fuchsia-500/40 to-cyan-400/50",
     href: "https://github.com/Amir3356/School-Voting-System",
@@ -92,7 +91,6 @@ export const projects = [
     description:
       "End-to-end garage workflow tool — vehicle intake, job cards, mechanic assignment, inventory and billing in one dashboard.",
     tags: ["Laravel", "JavaScript", "PHP"],
-    category: "Automotive",
     image: "/images/projects/garage-management-system.jpg",
     gradient: "from-cyan-500/60 via-sky-500/40 to-violet-500/50",
     href: "https://github.com/Amir3356/Garage-Management-System",
@@ -103,7 +101,6 @@ export const projects = [
     description:
       "Pharmacy operations suite covering medicine stock, expiry tracking, sales and supplier management with clear reporting.",
     tags: ["Laravel", "Blade", "JavaScript"],
-    category: "Healthcare",
     image: "/images/projects/pharmacy-management-system.jpg",
     gradient: "from-fuchsia-600/60 via-violet-500/40 to-indigo-400/50",
     href: "https://github.com/Amir3356/pharmacy-management-system",
@@ -114,7 +111,6 @@ export const projects = [
     description:
       "Full restaurant toolkit — menu management, table orders, kitchen coordination and billing built for busy service hours.",
     tags: ["PHP", "JavaScript", "CSS"],
-    category: "Food & Dining",
     image: "/images/projects/restaurant-management-system.png",
     gradient: "from-indigo-500/60 via-blue-500/40 to-emerald-400/50",
     href: "https://github.com/Amir3356/Restaurant-Management-System",
@@ -125,7 +121,6 @@ export const projects = [
     description:
       "A modern job marketplace connecting employers and candidates with postings, applications and profile management.",
     tags: ["Full-Stack", "Web App"],
-    category: "Careers",
     image: "",
     gradient: "from-violet-600/60 via-indigo-500/40 to-cyan-400/50",
     href: "https://github.com/Amir3356",

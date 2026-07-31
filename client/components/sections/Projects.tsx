@@ -70,9 +70,6 @@ function ProjectCard({ project }: { project: Project }) {
             {project.index}
           </span>
         )}
-        <span className="glass absolute top-3 left-3 rounded-full px-2.5 py-1 font-mono text-[9px] tracking-[0.2em] text-white/90 uppercase">
-          {project.category}
-        </span>
         <span className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-void/50 text-sm backdrop-blur-sm transition-all duration-500 group-hover:rotate-45 group-hover:bg-ink group-hover:text-void">
           ↗
         </span>
@@ -121,14 +118,14 @@ export default function Projects() {
   );
 
   return (
-    <section ref={root} id="work" className="relative py-28 lg:py-40">
+    <section ref={root} id="work" className="relative py-14 lg:py-20">
       <div
         className="pointer-events-none absolute -right-40 top-0 h-130 w-130 rounded-full bg-cyan-neon/8 blur-[140px]"
         aria-hidden
       />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <h2 className="text-center font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+        <h2 className="text-center font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
           My Projects
         </h2>
 
