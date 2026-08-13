@@ -21,8 +21,14 @@
   --animate-marquee: marquee 32s linear infinite;
   --animate-marquee-reverse: marquee-reverse 38s linear infinite;
   --animate-spin-slow: spin 14s linear infinite;
+  --animate-spin-slower: spin 26s linear infinite;
+  --animate-spin-reverse: spin-reverse 20s linear infinite;
   --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
 
+  @keyframes spin-reverse {
+    from { transform: rotate(360deg); }
+    to   { transform: rotate(0deg); }
+  }
   @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
@@ -131,7 +137,9 @@ html.lenis body {
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-marquee-reverse,
-  .animate-spin-slow {
+  .animate-spin-slow,
+  .animate-spin-slower,
+  .animate-spin-reverse {
     animation: none;
   }
 }

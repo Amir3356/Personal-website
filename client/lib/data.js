@@ -134,30 +134,30 @@ export const projects = [
  */
 export const experience = [
   {
-    period: "Summer 2026",
-    role: "Contributor",
+    period: "2026 · 3-Month Internship",
+    role: "Software Developer Intern",
     company: "Betwo Tech PLC",
     kind: "work",
-    description:
-      "Contributed to the Paxpia social media app and E-learning platform — built the Admin Dashboard. Tech Stack: React, Golang, PostgreSQL, Docker, MinIO, Nginx (API Gateway, Reverse Proxy, Caching), Redis (Caching, Session, Queues), Microservices Architecture, REST API, WebSocket API.",
+    description: `Worked on both individual and team-based projects, contributing across frontend and backend development.
+
+Betwo Tech PLC Landing Website: Independently developed a Full-Stack web application, building the frontend, backend, and database integration.
+Tech Stack: React (Vite) · Tailwind CSS · Node.js · PostgreSQL
+
+Paxpia Social Media App & E-learning Platform: Worked as a Backend Developer on the Admin Dashboard as part of a development team, contributing to backend services and APIs within a Microservices Architecture.
+Tech Stack: React (Vite) · Golang · REST API · WebSocket · PostgreSQL · Redis (Caching, Queues, Rate Limiting) · Nginx (API Gateway, Caching, Reverse Proxy, Load Balancing) · Docker · AWS S3, _ _ _ _ etc
+
+Landlord & Tenant System: Worked as a Frontend Developer on the Admin Dashboard as part of a development team, contributing to the Flutter application using a Monorepo project structure.
+Tech Stack: Flutter · Docker`,
     tags: [],
   },
   {
-    period: "2026 · 1 month",
+    period: "2025 · 2-Month Internship",
     role: "Frontend Web Developer",
     company: "Yanol Tech PLC",
     kind: "work",
-    description:
-      "Built modern, responsive user interfaces — translating designs into clean, reusable components with attention to detail and performance.",
-    tags: [],
-  },
-  {
-    period: "2026 · 2 months",
-    role: "Full-Stack Web Developer",
-    company: "Arriva System Solution PLC",
-    kind: "work",
-    description:
-      "Worked across the stack — implementing features from database to UI and strengthening my skills in building complete, production-ready web applications.",
+    description: `Independently developed the Dukan Machinery website as a Frontend Developer, building modern and responsive user interfaces with reusable components, attention to detail, and performance.
+
+Tech Stack: React (Vite) · Tailwind CSS · shadcn/ui`,
     tags: [],
   },
 ];

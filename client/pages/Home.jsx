@@ -3,19 +3,17 @@ import Preloader from "@/components/ui/Preloader";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
-
 import Projects from "@/components/sections/Projects";
 import Experience from "@/components/sections/Experience";
 import Skills from "@/components/sections/Skills";
 import Contact from "@/components/sections/Contact";
 
-export default function App() {
+export default function Home() {
   return (
     <>
       <SmoothScroll />
       <Preloader />
       <Navbar />
-
       <main className="flex-1">
         <Hero />
         <Projects />
@@ -23,7 +21,6 @@ export default function App() {
         <Skills />
         <Contact />
       </main>
-
       <Footer />
     </>
   );

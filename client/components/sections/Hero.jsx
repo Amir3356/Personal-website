@@ -5,7 +5,9 @@ import { Suspense, lazy } from "react";
 import Typed from "typed.js";
 import { gsap, useGSAP, SplitText, onPreloaderDone } from "@/lib/gsap";
 import { site, hero } from "@/lib/data";
+import { useSettings, assetUrl } from "@/lib/useSettings";
 import MagneticButton from "@/components/ui/MagneticButton";
+import ChatBot from "@/components/ui/ChatBot";
 import { scrollToSection } from "@/components/providers/SmoothScroll";
 
 const HeroScene = lazy(() => import("@/components/three/HeroScene"));
@@ -13,6 +15,7 @@ const HeroScene = lazy(() => import("@/components/three/HeroScene"));
 export default function Hero() {
   const root = useRef(null);
   const typedEl = useRef(null);
+  const settings = useSettings({ hero: { image: "/images/amir.png", cvUrl: hero.cvUrl } });
 
   useGSAP(
     () => {
@@ -100,7 +103,8 @@ export default function Hero() {
   );
 
   return (
-    <section
+    <>
+      <section
       ref={root}
       id="hero"
       className="invisible relative flex min-h-svh flex-col justify-center overflow-hidden"
@@ -142,7 +146,7 @@ export default function Hero() {
                   →
                 </span>
               </MagneticButton>
-              <MagneticButton variant="outline" href={hero.cvUrl} download>
+              <MagneticButton variant="outline" href={assetUrl(settings.hero.cvUrl)} download>
                 Download CV
                 <span className="transition-transform duration-300 group-hover:translate-y-0.5">
                   ↓
@@ -162,7 +166,7 @@ export default function Hero() {
               <div className="relative overflow-hidden rounded-[2rem] border border-line/60 bg-surface">
                 <div className="relative aspect-4/5">
                   <img
-                    src="/images/amir.png"
+                    src={assetUrl(settings.hero.image)}
                     alt={`Portrait of ${site.fullName}`}
                     className="h-full w-full object-cover object-top"
                   />
@@ -185,6 +189,11 @@ export default function Hero() {
           <div className="h-2 w-1 animate-bounce rounded-full bg-cyan-neon" />
         </button>
       </div>
-    </section>
+      </section>
+
+      {/* Outside the section: it is fixed-position, and the hero clips
+          overflow and fades on scroll, which would hide it. */}
+      <ChatBot />
+    </>
   );
 }

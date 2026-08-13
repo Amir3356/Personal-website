@@ -1,9 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, useGSAP, ScrollTrigger } from "@/lib/gsap";
 import { projects } from "@/lib/data";
+import { api } from "@/lib/api";
+import { assetUrl } from "@/lib/useSettings";
 
 function ProjectCard({ project }) {
   const card = useRef(null);
@@ -50,7 +52,7 @@ function ProjectCard({ project }) {
         {project.image ? (
           <>
             <img
-              src={project.image}
+              src={assetUrl(project.image)}
               alt={`Screenshot of ${project.title}`}
               className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
             />
@@ -97,6 +99,23 @@ function ProjectCard({ project }) {
 
 export default function Projects() {
   const root = useRef(null);
+  // Falls back to the bundled list so the grid still renders if the API is down.
+  const [items, setItems] = useState(projects);
+
+  useEffect(() => {
+    let active = true;
+    api
+      .getProjects()
+      .then((data) => {
+        if (active && Array.isArray(data) && data.length) setItems(data);
+      })
+      .catch(() => {
+        /* keep the fallback */
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useGSAP(
     () => {
@@ -107,11 +126,14 @@ export default function Projects() {
           duration: 0.9,
           delay: (i % 3) * 0.1,
           ease: "power3.out",
-          scrollTrigger: { trigger: card, start: "top 90%" },
+          scrollTrigger: { trigger: card, start: "top 90%", invalidateOnRefresh: true },
         });
       });
+
+      // Cards can arrive from the API after the first paint, so re-measure.
+      ScrollTrigger.refresh();
     },
-    { scope: root }
+    { scope: root, dependencies: [items] }
   );
 
   return (
@@ -127,8 +149,8 @@ export default function Projects() {
         </h2>
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <ProjectCard key={project.title} project={project} />
+          {items.map((project) => (
+            <ProjectCard key={project.id || project.title} project={project} />
           ))}
         </div>
       </div>

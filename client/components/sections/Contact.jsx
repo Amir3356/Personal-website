@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { site } from "@/lib/data";
+import { useSettings } from "@/lib/useSettings";
+import { api } from "@/lib/api";
 
 const FIELD =
   "w-full rounded-xl border border-line/70 bg-surface/70 px-4 py-3 text-sm text-ink placeholder:text-muted/70 outline-none transition-colors focus:border-violet-neon/60 focus:bg-elevate";
@@ -10,6 +12,9 @@ const FIELD =
 export default function Contact() {
   const root = useRef(null);
   const [errors, setErrors] = useState({});
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const settings = useSettings({ contact: { email: site.email } });
 
   useGSAP(
     () => {
@@ -26,12 +31,13 @@ export default function Contact() {
   );
 
   /**
-   * No backend here — compose the message in the visitor's mail client so
-   * the form works on a static host.
+   * Sends the message to the API so it shows up in the admin dashboard, and
+   * falls back to the visitor's mail client if the API can't be reached.
    */
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const data = new FormData(form);
     const name = data.get("name").trim();
     const email = data.get("email").trim();
     const subject = data.get("subject").trim();
@@ -47,10 +53,21 @@ export default function Contact() {
     setErrors(next);
     if (Object.keys(next).length) return;
 
-    const body = `${message}\n\n— ${name}\n${email}`;
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject || `Portfolio enquiry from ${name}`
-    )}&body=${encodeURIComponent(body)}`;
+    setSending(true);
+    setSent(false);
+    try {
+      await api.sendMessage({ name, email, subject, message });
+      setSent(true);
+      form.reset();
+    } catch {
+      // Don't lose the visitor's message if the server is down.
+      const body = `${message}\n\n— ${name}\n${email}`;
+      window.location.href = `mailto:${settings.contact.email}?subject=${encodeURIComponent(
+        subject || `Portfolio enquiry from ${name}`
+      )}&body=${encodeURIComponent(body)}`;
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -159,12 +176,18 @@ export default function Contact() {
             )}
           </div>
 
-          <div className="contact-field mt-8 flex justify-end">
+          <div className="contact-field mt-8 flex items-center justify-end gap-4">
+            {sent && (
+              <p role="status" className="text-sm text-cyan-neon">
+                Thanks — your message has been sent.
+              </p>
+            )}
             <button
               type="submit"
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-ink px-8 py-3.5 text-sm font-medium tracking-wide text-void transition-colors duration-300 hover:bg-violet-neon hover:text-white"
+              disabled={sending}
+              className="group inline-flex items-center justify-center gap-2 rounded-full bg-ink px-8 py-3.5 text-sm font-medium tracking-wide text-void transition-colors duration-300 hover:bg-violet-neon hover:text-white disabled:opacity-60"
             >
-              Send Message
+              {sending ? "Sending…" : "Send Message"}
               <span className="transition-transform duration-300 group-hover:translate-x-1">
                 →
               </span>
