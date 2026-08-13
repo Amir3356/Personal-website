@@ -87,7 +87,7 @@ export default function ProjectsPanel() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="font-display text-2xl font-bold">My Projects</h2>
           <p className="mt-1 text-sm text-muted">Manage the work shown in your projects grid.</p>
@@ -125,7 +125,8 @@ export default function ProjectsPanel() {
                   )}
 
                   {/* Actions float over the cover so cards stay compact */}
-                  <div className="absolute top-2 right-2 flex gap-1.5 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+                  {/* Always visible on touch — hover reveal only where a pointer exists */}
+                  <div className="absolute top-2 right-2 flex gap-1.5 transition-opacity lg:opacity-0 lg:group-hover:opacity-100 lg:focus-within:opacity-100">
                     <button
                       onClick={() => handleEdit(p)}
                       aria-label={`Edit ${p.title}`}
@@ -200,7 +201,7 @@ export default function ProjectsPanel() {
 
           {status && <p className="text-sm text-red-400">{status}</p>}
 
-          <div className="mt-2 flex gap-3">
+          <div className="mt-2 flex flex-col-reverse gap-3 sm:flex-row">
             <button
               type="submit"
               disabled={busy}

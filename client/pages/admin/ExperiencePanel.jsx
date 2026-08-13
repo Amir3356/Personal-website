@@ -79,7 +79,7 @@ export default function ExperiencePanel() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="font-display text-2xl font-bold">Experiences</h2>
           <p className="mt-1 text-sm text-muted">Your work and education timeline.</p>
@@ -164,7 +164,7 @@ export default function ExperiencePanel() {
 
           {status && <p className="text-sm text-red-400">{status}</p>}
 
-          <div className="mt-2 flex gap-3">
+          <div className="mt-2 flex flex-col-reverse gap-3 sm:flex-row">
             <button
               type="submit"
               disabled={busy}

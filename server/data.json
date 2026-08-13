@@ -73,7 +73,7 @@
   "settings": {
     "hero": {
       "image": "/uploads/file-1786653618969.png",
-      "cvUrl": "/uploads/file-1786655878182.pdf"
+      "cvUrl": "/uploads/file-1786657939910.pdf"
     },
     "contact": {
       "email": "amir@betwotech.com",
@@ -87,33 +87,5 @@
       ]
     }
   },
-  "messages": [
-    {
-      "id": "msg-1786656591335",
-      "name": "Alice Chen",
-      "email": "alice@zeta.dev",
-      "subject": "Collaboration",
-      "message": "Would love to team up on an open source project.",
-      "read": false,
-      "createdAt": "2026-08-13T21:29:51.335Z"
-    },
-    {
-      "id": "msg-1786656591320",
-      "name": "Bob Smith",
-      "email": "bob@acme.io",
-      "subject": "Freelance work",
-      "message": "Are you available for a 3-month contract?",
-      "read": false,
-      "createdAt": "2026-08-13T21:29:51.321Z"
-    },
-    {
-      "id": "msg-1786656120249",
-      "name": "Test Visitor",
-      "email": "visitor@example.com",
-      "subject": "Job opportunity",
-      "message": "Hello Amir,\nI saw your portfolio and would like to discuss a role.",
-      "read": false,
-      "createdAt": "2026-08-13T21:22:00.249Z"
-    }
-  ]
+  "messages": []
 }

@@ -67,7 +67,7 @@ export default function UploadField({
           alt="Current selection"
           className={
             uploadOnly
-              ? "aspect-4/5 w-44 rounded-lg border border-line/60 object-cover object-top"
+              ? "mx-auto aspect-4/5 w-44 rounded-lg border border-line/60 object-cover object-top"
               : "h-32 w-32 rounded-lg border border-line/60 object-cover"
           }
         />
@@ -87,7 +87,7 @@ export default function UploadField({
           {hint && <span className="text-xs text-muted">{hint}</span>}
         </button>
       ) : (
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <input
             type="text"
             value={value || ""}

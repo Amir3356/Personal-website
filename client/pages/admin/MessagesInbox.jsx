@@ -9,9 +9,7 @@ import {
 } from "@tanstack/react-table";
 import {
   MdDelete,
-  MdMarkEmailRead,
-  MdMarkEmailUnread,
-  MdRefresh,
+  MdVisibility,
   MdArrowUpward,
   MdArrowDownward,
 } from "react-icons/md";
@@ -19,6 +17,17 @@ import { api } from "@/lib/api";
 import Modal from "./Modal";
 
 const columnHelper = createColumnHelper();
+
+/**
+ * Which columns drop away as the viewport narrows. Written as plain literals so
+ * Tailwind's scanner picks the utilities up — it can't see class names that are
+ * only ever assembled at runtime.
+ */
+const HIDE_CLASSES = {
+  no: "hidden sm:table-cell",
+  subject: "hidden md:table-cell",
+  message: "hidden lg:table-cell",
+};
 
 export default function MessagesInbox() {
   const [messages, setMessages] = useState([]);
@@ -69,9 +78,12 @@ export default function MessagesInbox() {
 
   const columns = useMemo(
     () => [
+      // `meta.className` drives which columns survive on narrow screens. The
+      // literals are repeated in HIDE_CLASSES so Tailwind's scanner sees them.
       columnHelper.display({
         id: "no",
         header: "No",
+        meta: { className: HIDE_CLASSES.no },
         cell: (info) => (
           <span className="font-mono text-xs text-muted">{info.row.index + 1}</span>
         ),
@@ -79,14 +91,19 @@ export default function MessagesInbox() {
       columnHelper.accessor("email", {
         header: "Email",
         cell: (info) => (
-          <div className="min-w-0">
+          <div className="min-w-0 max-w-[9rem] sm:max-w-none">
             <p className="truncate text-ink">{info.row.original.name}</p>
             <p className="truncate font-mono text-xs text-cyan-neon">{info.getValue()}</p>
+            {/* Subject folds in here once its own column is hidden */}
+            <p className="mt-0.5 truncate text-xs text-muted md:hidden">
+              {info.row.original.subject || "(no subject)"}
+            </p>
           </div>
         ),
       }),
       columnHelper.accessor("subject", {
         header: "Subject",
+        meta: { className: HIDE_CLASSES.subject },
         cell: (info) => (
           <span className="block max-w-[16rem] truncate">
             {info.getValue() || <span className="text-muted">(no subject)</span>}
@@ -96,6 +113,7 @@ export default function MessagesInbox() {
       columnHelper.accessor("message", {
         header: "Message",
         enableSorting: false,
+        meta: { className: HIDE_CLASSES.message },
         cell: (info) => (
           <span className="block max-w-sm truncate text-muted">{info.getValue()}</span>
         ),
@@ -110,20 +128,20 @@ export default function MessagesInbox() {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  setRead(msg, !msg.read);
+                  openMessage(msg);
                 }}
-                aria-label={msg.read ? "Mark as unread" : "Mark as read"}
-                title={msg.read ? "Mark as unread" : "Mark as read"}
+                aria-label={`View message from ${msg.name}`}
+                title="View message"
                 className="p-2 text-muted transition-colors hover:text-cyan-neon"
               >
-                {msg.read ? <MdMarkEmailUnread size={18} /> : <MdMarkEmailRead size={18} />}
+                <MdVisibility size={18} />
               </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDelete(msg.id);
                 }}
-                aria-label="Delete message"
+                aria-label={`Delete message from ${msg.name}`}
                 title="Delete"
                 className="p-2 text-muted transition-colors hover:text-red-500"
               >
@@ -137,9 +155,13 @@ export default function MessagesInbox() {
     []
   );
 
+  // v9 takes features and row models together under `features`.
   const table = useTable({
-    _features: { rowSortingFeature },
-    _rowModels: { sortedRowModel: createSortedRowModel(sortFns) },
+    features: {
+      rowSortingFeature,
+      sortFns,
+      sortedRowModel: createSortedRowModel(sortFns),
+    },
     data: messages,
     columns,
     state: { sorting },
@@ -152,18 +174,10 @@ export default function MessagesInbox() {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-muted">
-          {messages.length} message{messages.length === 1 ? "" : "s"}
-          {unread > 0 && <span className="ml-2 text-cyan-neon">· {unread} unread</span>}
-        </p>
-        <button
-          onClick={load}
-          className="flex items-center gap-2 rounded-md border border-line/60 px-3 py-1.5 text-sm text-muted transition-colors hover:bg-line/40 hover:text-ink"
-        >
-          <MdRefresh size={18} /> Refresh
-        </button>
-      </div>
+      <p className="text-sm text-muted">
+        {messages.length} message{messages.length === 1 ? "" : "s"}
+        {unread > 0 && <span className="ml-2 text-cyan-neon">· {unread} unread</span>}
+      </p>
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 
@@ -183,9 +197,9 @@ export default function MessagesInbox() {
                     return (
                       <th
                         key={header.id}
-                        className={`px-4 py-3 font-mono text-xs tracking-wider text-muted uppercase ${
+                        className={`px-3 py-3 font-mono text-xs tracking-wider text-muted uppercase sm:px-4 ${
                           header.id === "action" ? "text-right" : ""
-                        }`}
+                        } ${header.column.columnDef.meta?.className ?? ""}`}
                       >
                         {canSort ? (
                           <button
@@ -217,10 +231,12 @@ export default function MessagesInbox() {
                       msg.read ? "" : "bg-cyan-neon/5"
                     }`}
                   >
-                    {row.getVisibleCells().map((cell) => (
+                    {row.getAllCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className={`px-4 py-3 align-top ${msg.read ? "" : "font-semibold"}`}
+                        className={`px-3 py-3 align-top sm:px-4 ${msg.read ? "" : "font-semibold"} ${
+                          cell.column.columnDef.meta?.className ?? ""
+                        }`}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>

@@ -36,7 +36,7 @@ export default function Modal({ open, title, onClose, children }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm sm:p-6"
+      className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/70 p-3 backdrop-blur-sm sm:p-6"
       onMouseDown={(e) => {
         // Only a press that starts on the backdrop dismisses, so a drag that
         // ends outside the panel doesn't close the dialog unexpectedly.
@@ -51,19 +51,21 @@ export default function Modal({ open, title, onClose, children }) {
         tabIndex={-1}
         className="my-auto w-full max-w-lg rounded-2xl border border-line/60 bg-surface shadow-2xl outline-none"
       >
-        <div className="flex items-center justify-between border-b border-line/60 px-6 py-4">
-          <h3 className="font-display text-lg font-bold text-ink">{title}</h3>
+        <div className="flex items-center justify-between gap-3 border-b border-line/60 px-4 py-3.5 sm:px-6 sm:py-4">
+          <h3 className="min-w-0 truncate font-display text-base font-bold text-ink sm:text-lg">{title}</h3>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="grid h-8 w-8 place-items-center rounded-md text-muted transition-colors hover:bg-line/40 hover:text-ink"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-md text-muted transition-colors hover:bg-line/40 hover:text-ink"
           >
             <MdClose size={20} />
           </button>
         </div>
 
-        <div className="max-h-[70vh] overflow-y-auto px-6 py-5">{children}</div>
+        <div className="max-h-[75vh] overflow-y-auto px-4 py-4 sm:max-h-[70vh] sm:px-6 sm:py-5">
+          {children}
+        </div>
       </div>
     </div>
   );
