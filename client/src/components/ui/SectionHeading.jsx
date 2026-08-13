@@ -3,15 +3,16 @@
 import { useRef } from "react";
 import { gsap, useGSAP, SplitText } from "@/lib/gsap";
 
-type Props = {
-  kicker: string;
-  title: string;
-  align?: "left" | "center";
-};
-
-/** Numbered kicker + big display title that reveals word-by-word on scroll. */
-export default function SectionHeading({ kicker, title, align = "left" }: Props) {
-  const root = useRef<HTMLDivElement>(null);
+/**
+ * Numbered kicker + big display title that reveals word-by-word on scroll.
+ *
+ * @param {object} props
+ * @param {string} props.kicker
+ * @param {string} props.title `\n` becomes a hard line break.
+ * @param {"left" | "center"} [props.align]
+ */
+export default function SectionHeading({ kicker, title, align = "left" }) {
+  const root = useRef(null);
 
   useGSAP(
     () => {

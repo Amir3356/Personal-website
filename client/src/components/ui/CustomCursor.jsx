@@ -2,14 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-
-/**
- * A dot + trailing ring cursor. The ring expands over any element
- * carrying `data-cursor="hover"`. Desktop (fine pointer) only.
- */
 export default function CustomCursor() {
-  const dot = useRef<HTMLDivElement>(null);
-  const ring = useRef<HTMLDivElement>(null);
+  const dot = useRef(null);
+  const ring = useRef(null);
   const enabled = useRef(false);
 
   useGSAP(() => {
@@ -22,17 +17,15 @@ export default function CustomCursor() {
     const ringX = gsap.quickTo(ring.current, "x", { duration: 0.45, ease: "power3" });
     const ringY = gsap.quickTo(ring.current, "y", { duration: 0.45, ease: "power3" });
 
-    const move = (e: MouseEvent) => {
+    const move = (e) => {
       dotX(e.clientX);
       dotY(e.clientY);
       ringX(e.clientX);
       ringY(e.clientY);
     };
 
-    const over = (e: MouseEvent) => {
-      const hoverable = (e.target as HTMLElement).closest(
-        "a, button, [data-cursor='hover']"
-      );
+    const over = (e) => {
+      const hoverable = e.target.closest("a, button, [data-cursor='hover']");
       gsap.to(ring.current, {
         scale: hoverable ? 2.2 : 1,
         opacity: hoverable ? 0.4 : 1,

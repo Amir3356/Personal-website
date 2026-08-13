@@ -10,7 +10,7 @@ function useGlowTexture() {
     const size = 64;
     const canvas = document.createElement("canvas");
     canvas.width = canvas.height = size;
-    const ctx = canvas.getContext("2d")!;
+    const ctx = canvas.getContext("2d");
     const gradient = ctx.createRadialGradient(
       size / 2, size / 2, 0,
       size / 2, size / 2, size / 2
@@ -26,9 +26,8 @@ function useGlowTexture() {
   }, []);
 }
 
-/** Slowly swirling particle galaxy that reacts to the pointer. */
-function ParticleField({ count = 2600 }: { count?: number }) {
-  const points = useRef<THREE.Points>(null);
+function ParticleField({ count = 2600 }) {
+  const points = useRef(null);
   const sprite = useGlowTexture();
 
   const { positions, colors } = useMemo(() => {

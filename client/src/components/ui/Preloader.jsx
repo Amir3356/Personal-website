@@ -9,8 +9,8 @@ import { site } from "@/lib/data";
  * stagger in, then the curtain sweeps up to reveal the page.
  */
 export default function Preloader() {
-  const root = useRef<HTMLDivElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
+  const root = useRef(null);
+  const counterRef = useRef(null);
   const [done, setDone] = useState(false);
 
   useGSAP(

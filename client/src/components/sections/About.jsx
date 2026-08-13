@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@/lib/gsap";
-import { about } from "@/lib/data";
+
 
 export default function About() {
-  const root = useRef<HTMLElement>(null);
+  const root = useRef(null);
 
   useGSAP(
     () => {},

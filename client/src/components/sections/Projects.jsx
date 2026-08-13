@@ -1,18 +1,14 @@
 "use client";
 
-import { useRef, type MouseEvent } from "react";
-import Image from "next/image";
+import { useRef } from "react";
+
 import { gsap, useGSAP } from "@/lib/gsap";
 import { projects } from "@/lib/data";
 
-type Project = (typeof projects)[number];
-
-function ProjectCard({ project }: { project: Project }) {
-  const card = useRef<HTMLAnchorElement>(null);
-  const quick = useRef<{
-    rx: gsap.QuickToFunc;
-    ry: gsap.QuickToFunc;
-  } | null>(null);
+function ProjectCard({ project }) {
+  const card = useRef(null);
+  // { rx, ry } quickTo setters, created once the card mounts
+  const quick = useRef(null);
 
   useGSAP(() => {
     if (!card.current) return;
@@ -23,7 +19,7 @@ function ProjectCard({ project }: { project: Project }) {
     };
   });
 
-  const onMove = (e: MouseEvent) => {
+  const onMove = (e) => {
     const el = card.current;
     if (!el || !quick.current || !window.matchMedia("(pointer: fine)").matches)
       return;
@@ -40,11 +36,8 @@ function ProjectCard({ project }: { project: Project }) {
   };
 
   return (
-    <a
+    <div
       ref={card}
-      href={project.href}
-      target="_blank"
-      rel="noreferrer"
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       data-cursor="hover"
@@ -52,16 +45,14 @@ function ProjectCard({ project }: { project: Project }) {
     >
       {/* Cover: screenshot when available, branded gradient otherwise */}
       <div
-        className={`relative aspect-video shrink-0 overflow-hidden bg-linear-to-br ${project.gradient}`}
+        className={`relative aspect-[16/10] shrink-0 overflow-hidden bg-linear-to-br ${project.gradient}`}
       >
         {project.image ? (
           <>
-            <Image
+            <img
               src={project.image}
               alt={`Screenshot of ${project.title}`}
-              fill
-              sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 26rem"
-              className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+              className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-linear-to-t from-void/60 via-transparent to-void/20 transition-opacity duration-500 group-hover:opacity-30" />
           </>
@@ -70,40 +61,46 @@ function ProjectCard({ project }: { project: Project }) {
             {project.index}
           </span>
         )}
-        <span className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-void/50 text-sm backdrop-blur-sm transition-all duration-500 group-hover:rotate-45 group-hover:bg-ink group-hover:text-void">
-          ↗
-        </span>
       </div>
 
       {/* Meta */}
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-display text-lg font-bold transition-colors duration-300 group-hover:text-violet-soft">
+      <div className="flex flex-1 flex-col p-6">
+        <h3 className="font-display text-xl font-bold transition-colors duration-300 group-hover:text-violet-soft">
           {project.title}
         </h3>
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
+        <p className="mt-3 text-sm leading-relaxed text-muted">
           {project.description}
         </p>
-        <ul className="mt-4 flex flex-wrap gap-1.5">
+        <ul className="mt-5 flex flex-1 flex-wrap content-start gap-2">
           {project.tags.map((tag) => (
             <li
               key={tag}
-              className="rounded-full border border-line/70 px-2.5 py-0.5 font-mono text-[9px] tracking-widest text-muted uppercase"
+              className="rounded-full border border-line/70 px-3 py-1 font-mono text-[10px] tracking-widest text-muted uppercase"
             >
               {tag}
             </li>
           ))}
         </ul>
+        <a
+          href={project.href}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-6 inline-flex w-fit cursor-pointer items-center gap-1.5 text-sm font-medium text-violet-neon transition-colors duration-300 group-hover:text-cyan-neon"
+        >
+          View Details
+          <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+        </a>
       </div>
-    </a>
+    </div>
   );
 }
 
 export default function Projects() {
-  const root = useRef<HTMLElement>(null);
+  const root = useRef(null);
 
   useGSAP(
     () => {
-      gsap.utils.toArray<HTMLElement>(".project-card").forEach((card, i) => {
+      gsap.utils.toArray(".project-card").forEach((card, i) => {
         gsap.from(card, {
           y: 60,
           opacity: 0,
@@ -124,7 +121,7 @@ export default function Projects() {
         aria-hidden
       />
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+      <div className="mx-auto max-w-6xl px-6 lg:px-10">
         <h2 className="text-center font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
           My Projects
         </h2>

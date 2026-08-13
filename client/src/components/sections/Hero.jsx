@@ -1,25 +1,21 @@
 "use client";
 
 import { useRef } from "react";
-import dynamic from "next/dynamic";
-import Image from "next/image";
+import { Suspense, lazy } from "react";
 import Typed from "typed.js";
 import { gsap, useGSAP, SplitText, onPreloaderDone } from "@/lib/gsap";
 import { site, hero } from "@/lib/data";
 import MagneticButton from "@/components/ui/MagneticButton";
 import { scrollToSection } from "@/components/providers/SmoothScroll";
 
-const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
-  ssr: false,
-});
+const HeroScene = lazy(() => import("@/components/three/HeroScene"));
 
 export default function Hero() {
-  const root = useRef<HTMLElement>(null);
-  const typedEl = useRef<HTMLSpanElement>(null);
+  const root = useRef(null);
+  const typedEl = useRef(null);
 
   useGSAP(
     () => {
-      // Only the static part is char-split; the highlight is live-typed
       const title = root.current?.querySelector(".hero-title-static");
       if (!title) return;
 
@@ -56,7 +52,7 @@ export default function Hero() {
 
       // Typewriter on the gradient highlight, starting once the static
       // heading has typed itself in after the preloader.
-      let typed: Typed | null = null;
+      let typed = null;
       const cleanup = onPreloaderDone(() => {
         intro.play();
         if (typedEl.current) {
@@ -111,7 +107,9 @@ export default function Hero() {
     >
       {/* 3D backdrop */}
       <div className="absolute inset-0" aria-hidden>
-        <HeroScene />
+        <Suspense fallback={null}>
+          <HeroScene />
+        </Suspense>
         {/* soften scene edges into the page */}
         <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-void/60 via-transparent to-void" />
       </div>
@@ -163,13 +161,10 @@ export default function Hero() {
               />
               <div className="relative overflow-hidden rounded-[2rem] border border-line/60 bg-surface">
                 <div className="relative aspect-4/5">
-                  <Image
+                  <img
                     src="/images/amir.png"
                     alt={`Portrait of ${site.fullName}`}
-                    fill
-                    sizes="(max-width: 640px) 80vw, 24rem"
-                    className="object-cover object-top"
-                    priority
+                    className="h-full w-full object-cover object-top"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-void/70 via-transparent to-transparent" />
                 </div>

@@ -1,19 +1,20 @@
 "use client";
 
-import { useRef, type ReactNode, type MouseEvent } from "react";
+import { useRef } from "react";
 import { gsap } from "@/lib/gsap";
 
-type Props = {
-  children: ReactNode;
-  href?: string;
-  onClick?: () => void;
-  variant?: "solid" | "outline";
-  className?: string;
-  strength?: number;
-  download?: boolean;
-};
-
-/** Button that magnetically leans toward the cursor and springs back. */
+/**
+ * Button/link that leans toward the cursor and springs back on leave.
+ *
+ * @param {object} props
+ * @param {import("react").ReactNode} props.children
+ * @param {string} [props.href] Renders an `<a>` instead of a `<button>`.
+ * @param {() => void} [props.onClick]
+ * @param {"solid" | "outline"} [props.variant]
+ * @param {string} [props.className]
+ * @param {number} [props.strength] How far it follows the cursor, 0–1.
+ * @param {boolean} [props.download]
+ */
 export default function MagneticButton({
   children,
   href,
@@ -22,10 +23,10 @@ export default function MagneticButton({
   className = "",
   strength = 0.35,
   download,
-}: Props) {
-  const ref = useRef<HTMLAnchorElement | HTMLButtonElement | null>(null);
+}) {
+  const ref = useRef(null);
 
-  const onMove = (e: MouseEvent) => {
+  const onMove = (e) => {
     const el = ref.current;
     if (!el || !window.matchMedia("(pointer: fine)").matches) return;
     const rect = el.getBoundingClientRect();
@@ -53,18 +54,13 @@ export default function MagneticButton({
 
   if (href) {
     return (
-      <a
-        ref={ref as React.Ref<HTMLAnchorElement>}
-        href={href}
-        download={download}
-        {...props}
-      >
+      <a ref={ref} href={href} download={download} {...props}>
         {children}
       </a>
     );
   }
   return (
-    <button ref={ref as React.Ref<HTMLButtonElement>} type="button" {...props}>
+    <button ref={ref} type="button" {...props}>
       {children}
     </button>
   );

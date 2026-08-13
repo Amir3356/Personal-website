@@ -3,10 +3,10 @@
 import { useRef, useState } from "react";
 import { gsap, useGSAP, ScrollTrigger, onPreloaderDone } from "@/lib/gsap";
 import { navLinks, site } from "@/lib/data";
-import { getLenis, scrollToSection } from "@/components/providers/SmoothScroll";
+import { scrollToSection } from "@/components/providers/SmoothScroll";
 
 export default function Navbar() {
-  const root = useRef<HTMLElement>(null);
+  const root = useRef(null);
   const [open, setOpen] = useState(false);
 
   useGSAP(
@@ -35,7 +35,7 @@ export default function Navbar() {
     { scope: root }
   );
 
-  const go = (href: string) => {
+  const go = (href) => {
     setOpen(false);
     scrollToSection(href);
   };
