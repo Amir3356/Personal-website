@@ -11,10 +11,12 @@ next-env.d.ts
 .env.local
 .env.*.local
 
-# Admin-uploaded media is written at runtime and not source. Uploads are named
-# `file-<timestamp>.<ext>`, so ignoring that prefix keeps the bundled seed
-# images (amir.png, project covers) tracked alongside them.
-uploads/file-*
+# Runtime uploads go to Blob storage when deployed, so `uploads/` only holds
+# local dev writes plus the seed media (amir.png, project covers).
+#
+# These files are NOT ignored: anything data.json references has to be committed
+# or it 404s once deployed — the deployed filesystem only contains what git
+# carries. Delete unreferenced dev leftovers by hand rather than ignoring them.
 
 # Logs
 *.log

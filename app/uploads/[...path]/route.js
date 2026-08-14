@@ -15,18 +15,28 @@ const CONTENT_TYPES = {
   '.md': 'text/markdown',
 };
 
+// Reading from disk needs the Node runtime, not Edge.
+export const runtime = 'nodejs';
+
 /**
- * Serves uploaded media. Files sit outside `public/` because Next only picks
- * that directory up at build time — anything written at runtime wouldn't be
- * served without a restart.
+ * Serves uploaded media in local development. Files sit outside `public/`
+ * because Next only picks that directory up at build time — anything written at
+ * runtime wouldn't be served without a restart.
+ *
+ * In production uploads live in Blob storage and are referenced by their own
+ * absolute URL, so they never reach this handler. Only files committed to the
+ * repo under `uploads/` are served here once deployed.
  */
 export async function GET(request, { params }) {
   const { path: segments } = await params;
 
   // Resolve and confirm the result is still inside UPLOAD_DIR, so a crafted
   // "../../" path can't read arbitrary files off disk.
-  const filePath = path.resolve(UPLOAD_DIR, ...segments);
-  if (!filePath.startsWith(path.resolve(UPLOAD_DIR))) {
+  // The trailing separator matters: without it a sibling directory whose name
+  // merely starts with "uploads" would also pass the check.
+  const root = path.resolve(UPLOAD_DIR);
+  const filePath = path.resolve(root, ...segments);
+  if (filePath !== root && !filePath.startsWith(root + path.sep)) {
     return new Response('Not found', { status: 404 });
   }
 
