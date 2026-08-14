@@ -7,6 +7,7 @@ import {
   MdTitle,
   MdFileDownload,
   MdWork,
+  MdLayers,
   MdMail,
   MdTimeline,
   MdLogout,
@@ -20,6 +21,7 @@ import HeroPanel from "@/components/admin/HeroPanel";
 import HeroTextPanel from "@/components/admin/HeroTextPanel";
 import CvPanel from "@/components/admin/CvPanel";
 import ProjectsPanel from "@/components/admin/ProjectsPanel";
+import TechstackPanel from "@/components/admin/TechstackPanel";
 import ContactPanel from "@/components/admin/ContactPanel";
 import ExperiencePanel from "@/components/admin/ExperiencePanel";
 
@@ -28,6 +30,7 @@ const TABS = [
   { id: "heroText", label: "Hero Text", icon: MdTitle },
   { id: "cv", label: "Download CV", icon: MdFileDownload },
   { id: "projects", label: "My Projects", icon: MdWork },
+  { id: "techstack", label: "Techstack", icon: MdLayers },
   { id: "contact", label: "Contact Us", icon: MdMail },
   { id: "experience", label: "Experiences", icon: MdTimeline },
 ];
@@ -171,7 +174,7 @@ export default function Admin() {
           <main className="min-w-0 flex-1">
             {/* Only the hero/CV panels read from settings. */}
             {/* Panels that read from settings can't render until it loads. */}
-            {!settings && tab !== "projects" && tab !== "contact" ? (
+            {!settings && !["projects", "techstack", "contact"].includes(tab) ? (
               <p className="font-mono text-muted">Loading settings…</p>
             ) : (
               <>
@@ -179,6 +182,7 @@ export default function Admin() {
                 {tab === "heroText" && <HeroTextPanel settings={settings} onSaved={handleSaved} />}
                 {tab === "cv" && <CvPanel settings={settings} onSaved={handleSaved} />}
                 {tab === "projects" && <ProjectsPanel />}
+                {tab === "techstack" && <TechstackPanel />}
                 {tab === "contact" && <ContactPanel />}
                 {tab === "experience" && (
                   <ExperiencePanel settings={settings} onSaved={handleSaved} />

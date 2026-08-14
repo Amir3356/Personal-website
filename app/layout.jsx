@@ -2,7 +2,6 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata = {
-  title: "Amir Siraj — Full-Stack Developer",
   description:
     "Immersive digital experiences with modern web technology, 3D and motion design.",
   openGraph: {

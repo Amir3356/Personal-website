@@ -17,36 +17,13 @@
       "kind": "work",
       "description": "Independently developed the Dukan Machinery website as a Frontend Developer, building modern and responsive user interfaces with reusable components, attention to detail, and performance.\n\nTech Stack: React (Vite) · Tailwind CSS · shadcn/ui",
       "tags": []
-    },
-    {
-      "id": "exp-1786696978810",
-      "role": "Frontend Developer",
-      "company": "Halinks Ethiopia PLC",
-      "period": "2026 -2 months internship",
-      "description": "A social media application is a platform that allows users to connect, communicate, and share content with other people online. Users can create profiles, publish posts, upload photos and videos, like and comment on posts, follow other users, send messages, and receive notifications. The application can also provide features such as stories, search, user recommendations, and content sharing. Its main purpose is to help people communicate, build communities, and share information and experiences.",
-      "kind": "work",
-      "tags": []
     }
   ],
-  "projects": [
-    {
-      "id": "proj-1786693986814",
-      "title": "ERP",
-      "description": "HFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-      "detail": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
-      "tags": [
-        "React",
-        "Node.js",
-        "Postgress"
-      ],
-      "image": "/uploads/file-1786693981078.png",
-      "href": "https://github.com/Amir3356"
-    }
-  ],
+  "projects": [],
   "settings": {
     "hero": {
-      "image": "/uploads/file-1786696867414.png",
-      "cvUrl": "/uploads/file-1786691678088.pdf",
+      "image": "/uploads/file-1786704605280.png",
+      "cvUrl": "/uploads/file-1786703287591.docx",
       "headingStart": "Building Performance and ",
       "headingHighlights": [
         "scalable products",
@@ -68,27 +45,68 @@
     },
     "experience": {
       "heading": "Experiences",
-      "badge": ""
+      "badge": "Over all 3years Experinecs"
     }
   },
-  "messages": [
+  "messages": [],
+  "techstack": [
     {
-      "id": "msg-1786699266515",
-      "name": "jjjjjjjjj",
-      "email": "hshshhssh1995@gmail.com",
-      "subject": "Fullstack",
-      "message": "hddddddddddddddddddddddd",
-      "read": false,
-      "createdAt": "2026-08-14T09:21:06.515Z"
+      "id": "tech-seed-1",
+      "title": "Frontend",
+      "icon": "◈",
+      "skills": [
+        "React (Vite)",
+        "React Native (Expo)",
+        "Next.js"
+      ]
     },
     {
-      "id": "msg-1786698843395",
-      "name": "Asefa Geze",
-      "email": "asefageze1995@gmail.com",
-      "subject": "nnnnnnnnnnnn",
-      "message": "jddddddddddddddddddddddddddddddd",
-      "read": false,
-      "createdAt": "2026-08-14T09:14:03.395Z"
+      "id": "tech-seed-2",
+      "title": "Backend Development",
+      "icon": "◆",
+      "skills": [
+        "Express.js",
+        "Laravel",
+        "REST API",
+        "WebSocket"
+      ]
+    },
+    {
+      "id": "tech-seed-3",
+      "title": "Databases, Caching & Queues",
+      "icon": "▤",
+      "skills": [
+        "PostgreSQL",
+        "MongoDB",
+        "Redis"
+      ]
+    },
+    {
+      "id": "tech-seed-4",
+      "title": "Object Storage",
+      "icon": "▣",
+      "skills": [
+        "MinIO",
+        "Amazon S3"
+      ]
+    },
+    {
+      "id": "tech-seed-5",
+      "title": "DevOps & Infrastructure",
+      "icon": "◉",
+      "skills": [
+        "Docker",
+        "Nginx",
+        "Linux"
+      ]
+    },
+    {
+      "id": "tech-seed-6",
+      "title": "Version Control & Collaboration",
+      "icon": "◇",
+      "skills": [
+        "GitHub"
+      ]
     }
   ]
 }

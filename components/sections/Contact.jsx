@@ -5,6 +5,7 @@ import { gsap, useGSAP } from "@/utils/gsap";
 import { site } from "@/utils/data";
 import { useSettings } from "@/hooks/useSettings";
 import { api } from "@/services";
+import Toast from "@/components/ui/Toast";
 
 const FIELD =
   "w-full rounded-xl border border-line/70 bg-surface/70 px-4 py-3 text-sm text-ink placeholder:text-muted/70 outline-none transition-colors focus:border-violet-neon/60 focus:bg-elevate";
@@ -13,7 +14,9 @@ export default function Contact() {
   const root = useRef(null);
   const [errors, setErrors] = useState({});
   const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
+  // `key` remounts the toast so a second submit replays the animation and
+  // restarts the 5s countdown instead of reusing the one already on screen.
+  const [toast, setToast] = useState(null);
   const settings = useSettings({ contact: { email: site.email } });
 
   useGSAP(
@@ -40,6 +43,7 @@ export default function Contact() {
     const data = new FormData(form);
     const name = data.get("name").trim();
     const email = data.get("email").trim();
+    const phone = (data.get("phone") || "").trim();
     const subject = data.get("subject").trim();
     const message = data.get("message").trim();
 
@@ -48,20 +52,35 @@ export default function Contact() {
     if (!email) next.email = "Please add an email so I can reply.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       next.email = "That email doesn't look right.";
+    // Optional field, so only complain about a number that was actually typed.
+    if (phone && !/^\+?[\d\s().-]{6,}$/.test(phone))
+      next.phone = "That phone number doesn't look right.";
     if (!message) next.message = "Please write a short message.";
 
     setErrors(next);
     if (Object.keys(next).length) return;
 
     setSending(true);
-    setSent(false);
+    setToast(null);
     try {
-      await api.sendMessage({ name, email, subject, message });
-      setSent(true);
+      await api.sendMessage({ name, email, phone, subject, message });
+      setToast({
+        key: Date.now(),
+        variant: "success",
+        title: "Message sent successfully",
+        description:
+          "Thanks for reaching out — I've received your message and will get back to you soon.",
+      });
       form.reset();
     } catch {
+      setToast({
+        key: Date.now(),
+        variant: "error",
+        title: "Couldn't send your message",
+        description: "Opening your email app instead so your message isn't lost.",
+      });
       // Don't lose the visitor's message if the server is down.
-      const body = `${message}\n\n— ${name}\n${email}`;
+      const body = `${message}\n\n— ${name}\n${email}${phone ? `\n${phone}` : ""}`;
       window.location.href = `mailto:${settings.contact.email}?subject=${encodeURIComponent(
         subject || `Portfolio enquiry from ${name}`
       )}&body=${encodeURIComponent(body)}`;
@@ -200,12 +219,22 @@ export default function Contact() {
             )}
           </div>
 
+          {/* Sits in the form flow, directly above the submit button, so the
+              result appears where the visitor is already looking. */}
+          {toast && (
+            <div className="mt-6">
+              <Toast
+                key={toast.key}
+                open
+                title={toast.title}
+                description={toast.description}
+                variant={toast.variant}
+                onClose={() => setToast(null)}
+              />
+            </div>
+          )}
+
           <div className="contact-field mt-8 flex items-center justify-end gap-4">
-            {sent && (
-              <p role="status" className="text-sm text-cyan-neon">
-                Thanks — your message has been sent.
-              </p>
-            )}
             <button
               type="submit"
               disabled={sending}
@@ -217,8 +246,8 @@ export default function Contact() {
               </span>
             </button>
           </div>
-        </form>
-      </div>
+      </form>
+    </div>
     </section>
   );
 }

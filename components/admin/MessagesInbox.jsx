@@ -27,6 +27,7 @@ const columnHelper = createColumnHelper();
  */
 const HIDE_CLASSES = {
   no: "hidden sm:table-cell",
+  phone: "hidden md:table-cell",
   subject: "hidden md:table-cell",
   message: "hidden lg:table-cell",
 };
@@ -57,7 +58,14 @@ export default function MessagesInbox() {
     setMessages((list) => list.map((m) => (m.id === msg.id ? { ...m, read } : m)));
     try {
       await api.markMessageRead(msg.id, read);
-    } catch {
+    } catch (err) {
+      // A 404 means this row is stale — the message was deleted elsewhere (another
+      // tab, another device). Close it and resync rather than leaving a row on
+      // screen that no longer exists, which would 404 again on the next click.
+      if (err.status === 404) {
+        setActive((current) => (current?.id === msg.id ? null : current));
+        setError("That message no longer exists — refreshing the list.");
+      }
       load(); // resync if the server rejected it
     }
   };
@@ -74,6 +82,13 @@ export default function MessagesInbox() {
       setMessages((list) => list.filter((m) => m.id !== id));
       setActive((current) => (current?.id === id ? null : current));
     } catch (err) {
+      // Already gone server-side: the intent succeeded, so drop the stale row
+      // instead of reporting an error for a message that no longer exists.
+      if (err.status === 404) {
+        setMessages((list) => list.filter((m) => m.id !== id));
+        setActive((current) => (current?.id === id ? null : current));
+        return;
+      }
       setError(err.message);
     }
   };
@@ -96,12 +111,34 @@ export default function MessagesInbox() {
           <div className="min-w-0 max-w-[9rem] sm:max-w-none">
             <p className="truncate text-ink">{info.row.original.name}</p>
             <p className="truncate font-mono text-xs text-cyan-neon">{info.getValue()}</p>
+            {/* Phone folds in here once its own column is hidden */}
+            {info.row.original.phone && (
+              <p className="truncate font-mono text-xs text-muted md:hidden">
+                {info.row.original.phone}
+              </p>
+            )}
             {/* Subject folds in here once its own column is hidden */}
             <p className="mt-0.5 truncate text-xs text-muted md:hidden">
               {info.row.original.subject || "(no subject)"}
             </p>
           </div>
         ),
+      }),
+      columnHelper.accessor("phone", {
+        header: "Phone Number",
+        meta: { className: HIDE_CLASSES.phone },
+        cell: (info) =>
+          info.getValue() ? (
+            <a
+              href={`tel:${info.getValue().replace(/[^\d+]/g, "")}`}
+              onClick={(e) => e.stopPropagation()}
+              className="font-mono text-xs whitespace-nowrap text-cyan-neon hover:underline"
+            >
+              {info.getValue()}
+            </a>
+          ) : (
+            <span className="text-muted">—</span>
+          ),
       }),
       columnHelper.accessor("subject", {
         header: "Subject",
@@ -261,6 +298,14 @@ export default function MessagesInbox() {
             <div>
               <p className="text-sm text-ink">{active.name}</p>
               <p className="font-mono text-xs text-cyan-neon">{active.email}</p>
+              {active.phone && (
+                <a
+                  href={`tel:${active.phone.replace(/[^\d+]/g, "")}`}
+                  className="font-mono text-xs text-cyan-neon hover:underline"
+                >
+                  {active.phone}
+                </a>
+              )}
               <p className="mt-1 font-mono text-xs text-muted">
                 {new Date(active.createdAt).toLocaleString()}
               </p>

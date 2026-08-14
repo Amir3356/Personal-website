@@ -204,11 +204,11 @@ export default function ProjectsPanel() {
           />
           <Field label="Techstack" value={form.tags} onChange={set("tags")} placeholder="React, Node.js" />
           <Field
-            label="Link (GitHub / live URL)"
+            label="GitHub project repository"
             value={form.href}
             onChange={set("href")}
             placeholder="https://github.com/…"
-            hint="Optional. Shown as “Open project” in the View Details popup."
+            hint="Optional. Shown as a GitHub icon in the View Details popup."
           />
 
           <UploadField

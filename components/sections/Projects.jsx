@@ -2,6 +2,8 @@
 
 import { useRef, useState, useEffect } from "react";
 
+import { FaGithub } from "react-icons/fa";
+
 import { gsap, useGSAP, ScrollTrigger } from "@/utils/gsap";
 import { projects } from "@/utils/data";
 import { api } from "@/services";
@@ -77,17 +79,19 @@ function ProjectCard({ project, onView }) {
 
       {/* Meta */}
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="font-display text-xl font-bold transition-colors duration-300 group-hover:text-violet-soft">
+        <h3 className="font-display text-xl font-bold break-words transition-colors duration-300 group-hover:text-violet-soft">
           {project.title}
         </h3>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
+        {/* break-words so an unbroken run of characters (no spaces to wrap on)
+            folds instead of overflowing and being clipped by the card. */}
+        <p className="mt-3 line-clamp-4 text-sm leading-relaxed break-words text-muted">
           {project.description}
         </p>
         <ul className="mt-5 flex flex-1 flex-wrap content-start gap-2">
           {project.tags.map((tag) => (
             <li
               key={tag}
-              className="rounded-full border border-line/70 px-3 py-1 font-mono text-[10px] tracking-widest text-muted uppercase"
+              className="max-w-full rounded-full border border-line/70 px-3 py-1 font-mono text-[10px] tracking-widest break-all text-muted uppercase"
             >
               {tag}
             </li>
@@ -179,27 +183,30 @@ export default function Projects() {
         open={Boolean(active)}
         onClose={() => setActive(null)}
         title={active?.title || "Project"}
+        headerAction={
+          active?.href?.trim() && (
+            <a
+              href={normalizeUrl(active.href)}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Open ${active.title} repository in a new tab`}
+              title="Open repository"
+              className="grid h-9 w-9 place-items-center rounded-md text-muted transition-colors hover:bg-line/40 hover:text-cyan-neon"
+            >
+              <FaGithub size={18} />
+            </a>
+          )
+        }
       >
         {active && (
           /* Text-only by design — the card already shows the image, summary and
-             tags — plus the project link, which has nowhere else to appear. */
+             tags; the repo link lives in the header. */
           <div className="flex flex-col gap-5">
-            {/* overflow-wrap handles long words; the link below gets the same
-                treatment so a pasted URL can't widen the dialog. */}
+            {/* overflow-wrap handles long words so a pasted URL can't widen
+                the dialog. */}
             <p className="text-sm leading-relaxed break-words whitespace-pre-line text-ink">
               {active.detail?.trim() || "No further details have been added for this project yet."}
             </p>
-
-            {active.href?.trim() && (
-              <a
-                href={normalizeUrl(active.href)}
-                target="_blank"
-                rel="noreferrer"
-                className="w-fit max-w-full font-mono text-xs tracking-wider break-all text-cyan-neon uppercase hover:underline"
-              >
-                Open project →
-              </a>
-            )}
           </div>
         )}
       </Modal>

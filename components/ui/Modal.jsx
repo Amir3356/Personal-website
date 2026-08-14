@@ -7,7 +7,7 @@ import { MdClose } from "react-icons/md";
  * Centred dialog with a click-away backdrop. Closes on Escape and restores
  * focus to whatever opened it.
  */
-export default function Modal({ open, title, onClose, children }) {
+export default function Modal({ open, title, onClose, headerAction, children }) {
   const panelRef = useRef(null);
   const restoreTo = useRef(null);
 
@@ -60,14 +60,19 @@ export default function Modal({ open, title, onClose, children }) {
       >
         <div className="flex items-center justify-between gap-3 border-b border-line/60 px-4 py-3.5 sm:px-6 sm:py-4">
           <h3 className="min-w-0 truncate font-display text-base font-bold text-ink sm:text-lg">{title}</h3>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-md text-muted transition-colors hover:bg-line/40 hover:text-ink"
-          >
-            <MdClose size={20} />
-          </button>
+          {/* `headerAction` sits beside Close so per-dialog controls (e.g. a
+              repo link) share the header rather than crowding the body. */}
+          <div className="flex shrink-0 items-center gap-1">
+            {headerAction}
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close"
+              className="grid h-9 w-9 shrink-0 place-items-center rounded-md text-muted transition-colors hover:bg-line/40 hover:text-ink"
+            >
+              <MdClose size={20} />
+            </button>
+          </div>
         </div>
 
         {/* break-words stops a long unbroken string (a pasted URL, a run of

@@ -1,6 +1,7 @@
 import { authService } from "./authService";
 import { experienceService } from "./experienceService";
 import { projectService } from "./projectService";
+import { techstackService } from "./techstackService";
 import { messageService } from "./messageService";
 import { settingsService } from "./settingsService";
 import { uploadService } from "./uploadService";
@@ -9,6 +10,7 @@ export {
   authService,
   experienceService,
   projectService,
+  techstackService,
   messageService,
   settingsService,
   uploadService,
@@ -28,6 +30,11 @@ export const api = {
   createProject: projectService.create,
   updateProject: projectService.update,
   deleteProject: projectService.remove,
+
+  getTechstack: techstackService.list,
+  createTechstack: techstackService.create,
+  updateTechstack: techstackService.update,
+  deleteTechstack: techstackService.remove,
 
   sendMessage: messageService.send,
   getMessages: messageService.list,
