@@ -3,10 +3,10 @@ import { ok, withAuth } from '@/lib/api-helpers';
 
 export const PUT = withAuth(async (request, { params }) => {
   const { id } = await params;
-  return ok(techstackService.update(id, await request.json()));
+  return ok(await techstackService.update(id, await request.json()));
 });
 
 export const DELETE = withAuth(async (request, { params }) => {
   const { id } = await params;
-  return ok(techstackService.remove(id));
+  return ok(await techstackService.remove(id));
 });

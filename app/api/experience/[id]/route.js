@@ -3,10 +3,10 @@ import { ok, withAuth } from '@/lib/api-helpers';
 
 export const PUT = withAuth(async (request, { params }) => {
   const { id } = await params;
-  return ok(experienceService.update(id, await request.json()));
+  return ok(await experienceService.update(id, await request.json()));
 });
 
 export const DELETE = withAuth(async (request, { params }) => {
   const { id } = await params;
-  return ok(experienceService.remove(id));
+  return ok(await experienceService.remove(id));
 });

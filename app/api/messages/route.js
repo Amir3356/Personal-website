@@ -7,4 +7,4 @@ export const POST = handle(async (request) =>
 );
 
 // Reading the inbox is admin-only.
-export const GET = withAuth(async () => ok(messageService.list()));
+export const GET = withAuth(async () => ok(await messageService.list()));

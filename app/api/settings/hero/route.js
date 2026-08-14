@@ -2,5 +2,5 @@ import { settingsService } from '@/lib/services/settingsService';
 import { ok, withAuth } from '@/lib/api-helpers';
 
 export const PUT = withAuth(async (request) =>
-  ok(settingsService.updateHero(await request.json()))
+  ok(await settingsService.updateHero(await request.json()))
 );
