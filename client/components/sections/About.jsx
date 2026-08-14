@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@/lib/gsap";
+import { useGSAP } from "@/utils/gsap";
 
 
 export default function About() {

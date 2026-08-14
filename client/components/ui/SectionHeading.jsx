@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, SplitText } from "@/lib/gsap";
+import { gsap, useGSAP, SplitText } from "@/utils/gsap";
 
 /**
  * Numbered kicker + big display title that reveals word-by-word on scroll.

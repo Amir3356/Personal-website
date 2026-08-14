@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   MdImage,
+  MdTitle,
   MdFileDownload,
   MdWork,
   MdMail,
@@ -10,9 +11,11 @@ import {
   MdMenu,
   MdClose,
 } from "react-icons/md";
-import { api, getToken, clearToken } from "@/lib/api";
+import { api } from "@/services";
+import { useAuth } from "@/context/AuthContext";
 import Login from "./admin/Login";
 import HeroPanel from "./admin/HeroPanel";
+import HeroTextPanel from "./admin/HeroTextPanel";
 import CvPanel from "./admin/CvPanel";
 import ProjectsPanel from "./admin/ProjectsPanel";
 import ContactPanel from "./admin/ContactPanel";
@@ -20,6 +23,7 @@ import ExperiencePanel from "./admin/ExperiencePanel";
 
 const TABS = [
   { id: "hero", label: "Hero Image", icon: MdImage },
+  { id: "heroText", label: "Hero Text", icon: MdTitle },
   { id: "cv", label: "Download CV", icon: MdFileDownload },
   { id: "projects", label: "My Projects", icon: MdWork },
   { id: "contact", label: "Contact Us", icon: MdMail },
@@ -27,25 +31,11 @@ const TABS = [
 ];
 
 export default function Admin() {
-  const [authed, setAuthed] = useState(false);
-  const [checking, setChecking] = useState(true);
+  const { authed, checking, login, logout } = useAuth();
   const [tab, setTab] = useState("hero");
   const [settings, setSettings] = useState(null);
   const [unread, setUnread] = useState(0);
   const [navOpen, setNavOpen] = useState(false);
-
-  // Validate any stored token before showing the dashboard.
-  useEffect(() => {
-    if (!getToken()) {
-      setChecking(false);
-      return;
-    }
-    api
-      .me()
-      .then(() => setAuthed(true))
-      .catch(() => clearToken())
-      .finally(() => setChecking(false));
-  }, []);
 
   useEffect(() => {
     if (!authed) return;
@@ -74,9 +64,8 @@ export default function Admin() {
     };
   }, [navOpen]);
 
-  const handleLogout = () => {
-    clearToken();
-    setAuthed(false);
+  const handleLogout = async () => {
+    await logout();
     setSettings(null);
   };
 
@@ -86,7 +75,7 @@ export default function Admin() {
     return <div className="grid min-h-screen place-items-center bg-void font-mono text-muted">Loading…</div>;
   }
 
-  if (!authed) return <Login onSuccess={() => setAuthed(true)} />;
+  if (!authed) return <Login onLogin={login} />;
 
   return (
     <div className="min-h-screen bg-void font-sans text-ink selection:bg-cyan-neon/30">
@@ -179,15 +168,19 @@ export default function Admin() {
 
           <main className="min-w-0 flex-1">
             {/* Only the hero/CV panels read from settings. */}
-            {!settings && (tab === "hero" || tab === "cv") ? (
+            {/* Panels that read from settings can't render until it loads. */}
+            {!settings && tab !== "projects" && tab !== "contact" ? (
               <p className="font-mono text-muted">Loading settings…</p>
             ) : (
               <>
                 {tab === "hero" && <HeroPanel settings={settings} onSaved={handleSaved} />}
+                {tab === "heroText" && <HeroTextPanel settings={settings} onSaved={handleSaved} />}
                 {tab === "cv" && <CvPanel settings={settings} onSaved={handleSaved} />}
                 {tab === "projects" && <ProjectsPanel />}
                 {tab === "contact" && <ContactPanel />}
-                {tab === "experience" && <ExperiencePanel />}
+                {tab === "experience" && (
+                  <ExperiencePanel settings={settings} onSaved={handleSaved} />
+                )}
               </>
             )}
           </main>

@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { gsap, useGSAP, ScrollTrigger } from "@/lib/gsap";
+import { gsap, useGSAP, ScrollTrigger } from "@/utils/gsap";
+import { useSettings } from "@/hooks/useSettings";
+import { experienceService } from "@/services";
 
 function WorkIcon() {
   return (
@@ -24,20 +26,18 @@ function EducationIcon() {
 
 export default function Experience() {
   const root = useRef(null);
+  const settings = useSettings({
+    experience: { heading: "Experiences(3 years)", badge: "Overall 3 Years Experiences" },
+  });
   const [experience, setExperience] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/experience")
-      .then(res => res.json())
-      .then(data => {
-        setExperience(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to load experiences", err);
-        setLoading(false);
-      });
+    experienceService
+      .list()
+      .then(setExperience)
+      .catch((err) => console.error("Failed to load experiences", err))
+      .finally(() => setLoading(false));
   }, []);
 
   useGSAP(
@@ -57,18 +57,26 @@ export default function Experience() {
       });
 
       gsap.utils.toArray(".timeline-item").forEach((item) => {
+        // Each tween needs its own config object — ScrollTrigger mutates it.
+        const trigger = () => ({
+          trigger: item,
+          start: "top 82%",
+          toggleActions: "play none none none",
+          invalidateOnRefresh: true,
+        });
+
         gsap.from(item.querySelector(".timeline-card"), {
           x: item.dataset.side === "right" ? 50 : -50,
           opacity: 0,
           duration: 0.9,
           ease: "power3.out",
-          scrollTrigger: { trigger: item, start: "top 82%", invalidateOnRefresh: true },
+          scrollTrigger: trigger(),
         });
         gsap.from(item.querySelector(".timeline-dot"), {
           scale: 0,
           duration: 0.5,
           ease: "back.out(2.5)",
-          scrollTrigger: { trigger: item, start: "top 82%", invalidateOnRefresh: true },
+          scrollTrigger: trigger(),
         });
       });
 
@@ -77,19 +85,24 @@ export default function Experience() {
       // refresh the triggers never fire and the cards stay at opacity: 0.
       ScrollTrigger.refresh();
     },
-    { scope: root, dependencies: [experience] }
+    // revertOnUpdate undoes the previous run's `from` state before re-running.
+    // Without it the second pass (once data arrives) re-applies opacity: 0 to
+    // cards that never get a trigger, leaving the timeline invisible.
+    { scope: root, dependencies: [experience], revertOnUpdate: true }
   );
 
   return (
     <section ref={root} id="journey" className="relative py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <h2 className="text-center font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-          Experiences(3 years)
+          {settings.experience.heading}
         </h2>
-        <p className="mx-auto mt-5 flex w-fit items-center gap-2 rounded-full border border-violet-neon/30 bg-violet-neon/10 px-4 py-1.5 font-mono text-xs tracking-[0.2em] text-cyan-neon uppercase">
-          <span className="h-1.5 w-1.5 rounded-full bg-cyan-neon" />
-          Overall 3 Years Experiences
-        </p>
+        {settings.experience.badge && (
+          <p className="mx-auto mt-5 flex w-fit items-center gap-2 rounded-full border border-violet-neon/30 bg-violet-neon/10 px-4 py-1.5 font-mono text-xs tracking-[0.2em] text-cyan-neon uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-neon" />
+            {settings.experience.badge}
+          </p>
+        )}
 
         <div className="timeline relative mx-auto mt-16 max-w-5xl">
           {/* Spine — left rail on mobile, centered on desktop */}

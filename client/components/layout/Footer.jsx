@@ -1,4 +1,4 @@
-import { site } from "@/lib/data";
+import { site } from "@/utils/data";
 import { FaGithub, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 

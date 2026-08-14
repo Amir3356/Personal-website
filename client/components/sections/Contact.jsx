@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
-import { site } from "@/lib/data";
-import { useSettings } from "@/lib/useSettings";
-import { api } from "@/lib/api";
+import { gsap, useGSAP } from "@/utils/gsap";
+import { site } from "@/utils/data";
+import { useSettings } from "@/hooks/useSettings";
+import { api } from "@/services";
 
 const FIELD =
   "w-full rounded-xl border border-line/70 bg-surface/70 px-4 py-3 text-sm text-ink placeholder:text-muted/70 outline-none transition-colors focus:border-violet-neon/60 focus:bg-elevate";

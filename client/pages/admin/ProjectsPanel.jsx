@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { MdEdit, MdDelete, MdAdd } from "react-icons/md";
-import { api } from "@/lib/api";
-import { assetUrl } from "@/lib/useSettings";
-import UploadField from "./UploadField";
-import Modal from "./Modal";
+import { api } from "@/services";
+import { assetUrl } from "@/hooks/useSettings";
+import UploadField from "@/components/ui/UploadField";
+import Modal from "@/components/ui/Modal";
 
-const EMPTY = { title: "", description: "", tags: "", image: "", href: "" };
+const EMPTY = { title: "", description: "", detail: "", tags: "", image: "", href: "" };
 
 export default function ProjectsPanel() {
   const [projects, setProjects] = useState([]);
@@ -44,6 +44,7 @@ export default function ProjectsPanel() {
     setForm({
       title: project.title || "",
       description: project.description || "",
+      detail: project.detail || "",
       tags: (project.tags || []).join(", "),
       image: project.image || "",
       href: project.href || "",
@@ -89,7 +90,7 @@ export default function ProjectsPanel() {
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl font-bold">My Projects</h2>
+          <h2 className="font-display text-xl font-bold sm:text-2xl">My Projects</h2>
           <p className="mt-1 text-sm text-muted">Manage the work shown in your projects grid.</p>
         </div>
         <button
@@ -130,14 +131,14 @@ export default function ProjectsPanel() {
                     <button
                       onClick={() => handleEdit(p)}
                       aria-label={`Edit ${p.title}`}
-                      className="grid h-8 w-8 place-items-center rounded-md bg-void/80 text-muted backdrop-blur-sm transition-colors hover:text-cyan-neon"
+                      className="grid h-9 w-9 place-items-center lg:h-8 lg:w-8 rounded-md bg-void/80 text-muted backdrop-blur-sm transition-colors hover:text-cyan-neon"
                     >
                       <MdEdit size={17} />
                     </button>
                     <button
                       onClick={() => handleDelete(p.id)}
                       aria-label={`Delete ${p.title}`}
-                      className="grid h-8 w-8 place-items-center rounded-md bg-void/80 text-muted backdrop-blur-sm transition-colors hover:text-red-500"
+                      className="grid h-9 w-9 place-items-center lg:h-8 lg:w-8 rounded-md bg-void/80 text-muted backdrop-blur-sm transition-colors hover:text-red-500"
                     >
                       <MdDelete size={17} />
                     </button>
@@ -184,9 +185,29 @@ export default function ProjectsPanel() {
       >
         <form onSubmit={handleSave} className="flex flex-col gap-4">
           <Field label="Title" value={form.title} onChange={set("title")} required />
-          <Field label="Description" value={form.description} onChange={set("description")} textarea required />
+          <Field
+            label="Description"
+            value={form.description}
+            onChange={set("description")}
+            textarea
+            required
+            hint="Short summary shown on the project card."
+          />
+          <Field
+            label="View Detail Description"
+            value={form.detail}
+            onChange={set("detail")}
+            textarea
+            hint="The only thing shown in the View Details popup."
+          />
           <Field label="Techstack" value={form.tags} onChange={set("tags")} placeholder="React, Node.js" />
-          <Field label="Link (GitHub / live URL)" value={form.href} onChange={set("href")} placeholder="https://…" />
+          <Field
+            label="Link (GitHub / live URL)"
+            value={form.href}
+            onChange={set("href")}
+            placeholder="https://github.com/…"
+            hint="Optional. Shown as “Open project” in the View Details popup."
+          />
 
           <UploadField
             label="Cover Image"
@@ -224,13 +245,18 @@ export default function ProjectsPanel() {
   );
 }
 
-function Field({ label, textarea, ...props }) {
+function Field({ label, textarea, hint, type = "text", ...props }) {
   const cls =
     "rounded-md border border-line/60 bg-void px-3 py-2 text-ink focus:border-cyan-neon focus:outline-none";
   return (
     <div className="flex flex-col gap-1.5">
       <label className="font-mono text-xs tracking-wider text-muted uppercase">{label}</label>
-      {textarea ? <textarea rows={4} className={`${cls} resize-y`} {...props} /> : <input type="text" className={cls} {...props} />}
+      {textarea ? (
+        <textarea rows={4} className={`${cls} resize-y`} {...props} />
+      ) : (
+        <input type={type} className={cls} {...props} />
+      )}
+      {hint && <p className="text-xs text-muted">{hint}</p>}
     </div>
   );
 }

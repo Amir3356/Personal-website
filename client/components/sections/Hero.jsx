@@ -3,11 +3,10 @@
 import { useRef } from "react";
 import { Suspense, lazy } from "react";
 import Typed from "typed.js";
-import { gsap, useGSAP, SplitText, onPreloaderDone } from "@/lib/gsap";
-import { site, hero } from "@/lib/data";
-import { useSettings, assetUrl } from "@/lib/useSettings";
+import { gsap, useGSAP, SplitText, onPreloaderDone } from "@/utils/gsap";
+import { site, hero } from "@/utils/data";
+import { useSettings, assetUrl } from "@/hooks/useSettings";
 import MagneticButton from "@/components/ui/MagneticButton";
-import ChatBot from "@/components/ui/ChatBot";
 import { scrollToSection } from "@/components/providers/SmoothScroll";
 
 const HeroScene = lazy(() => import("@/components/three/HeroScene"));
@@ -15,7 +14,23 @@ const HeroScene = lazy(() => import("@/components/three/HeroScene"));
 export default function Hero() {
   const root = useRef(null);
   const typedEl = useRef(null);
-  const settings = useSettings({ hero: { image: "/images/amir.png", cvUrl: hero.cvUrl } });
+  const settings = useSettings({
+    hero: {
+      image: "/uploads/amir.png",
+      cvUrl: hero.cvUrl,
+      headingStart: hero.headingStart,
+      headingHighlights: hero.headingHighlights,
+      intro: hero.intro,
+      ctaLabel: "Contact Me",
+    },
+  });
+
+  // The typewriter is created once inside useGSAP, before the fetched settings
+  // land, so it reads the words through a ref that stays current.
+  const highlightsRef = useRef(settings.hero.headingHighlights);
+  highlightsRef.current = settings.hero.headingHighlights?.length
+    ? settings.hero.headingHighlights
+    : hero.headingHighlights;
 
   useGSAP(
     () => {
@@ -60,7 +75,8 @@ export default function Hero() {
         intro.play();
         if (typedEl.current) {
           typed = new Typed(typedEl.current, {
-            strings: hero.headingHighlights,
+            // Read through the ref: settings arrive after this effect runs.
+            strings: highlightsRef.current,
             typeSpeed: 55,
             backSpeed: 35,
             backDelay: 2000,
@@ -103,8 +119,7 @@ export default function Hero() {
   );
 
   return (
-    <>
-      <section
+    <section
       ref={root}
       id="hero"
       className="invisible relative flex min-h-svh flex-col justify-center overflow-hidden"
@@ -128,7 +143,7 @@ export default function Hero() {
                 className="hero-title-static"
                 style={{ overflow: "hidden", display: "inline" }}
               >
-                {hero.headingStart}
+                {settings.hero.headingStart}
               </span>
               <span className="text-gradient">
                 <span ref={typedEl} />
@@ -136,12 +151,12 @@ export default function Hero() {
             </h1>
 
             <p className="hero-fade mt-7 max-w-xl text-lg leading-relaxed text-muted">
-              {hero.intro}
+              {settings.hero.intro}
             </p>
 
             <div className="hero-fade mt-10 flex flex-wrap items-center gap-4">
               <MagneticButton onClick={() => scrollToSection("#contact")}>
-                Contact Me
+                {settings.hero.ctaLabel}
                 <span className="transition-transform duration-300 group-hover:translate-x-1">
                   →
                 </span>
@@ -189,11 +204,6 @@ export default function Hero() {
           <div className="h-2 w-1 animate-bounce rounded-full bg-cyan-neon" />
         </button>
       </div>
-      </section>
-
-      {/* Outside the section: it is fixed-position, and the hero clips
-          overflow and fades on scroll, which would hide it. */}
-      <ChatBot />
-    </>
+    </section>
   );
 }

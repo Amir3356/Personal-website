@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { MdEdit, MdDelete, MdAdd } from "react-icons/md";
-import { api } from "@/lib/api";
-import Modal from "./Modal";
+import { api } from "@/services";
+import { useStatus, attempt } from "@/handlers";
+import Modal from "@/components/ui/Modal";
 
 const EMPTY = { period: "", role: "", company: "", description: "" };
 
-export default function ExperiencePanel() {
+export default function ExperiencePanel({ settings, onSaved }) {
+  const [heading, setHeading] = useState(settings?.experience?.heading || "");
+  const [badge, setBadge] = useState(settings?.experience?.badge || "");
+  const [savingHeading, setSavingHeading] = useState(false);
+  const headingStatus = useStatus();
+
   const [experiences, setExperiences] = useState([]);
   const [editing, setEditing] = useState(null);
   const [open, setOpen] = useState(false);
@@ -20,6 +26,23 @@ export default function ExperiencePanel() {
   }, []);
 
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
+
+  const handleHeadingSave = async (e) => {
+    e.preventDefault();
+    setSavingHeading(true);
+    headingStatus.clear();
+
+    const [experience, error] = await attempt(() =>
+      api.updateExperienceSettings({ heading, badge })
+    );
+
+    if (error) headingStatus.showError(error);
+    else {
+      onSaved?.({ experience });
+      headingStatus.showSuccess("Saved successfully");
+    }
+    setSavingHeading(false);
+  };
 
   const closeModal = () => {
     if (busy) return; // don't drop a save that's already in flight
@@ -81,7 +104,7 @@ export default function ExperiencePanel() {
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl font-bold">Experiences</h2>
+          <h2 className="font-display text-xl font-bold sm:text-2xl">Experiences</h2>
           <p className="mt-1 text-sm text-muted">Your work and education timeline.</p>
         </div>
         <button
@@ -91,6 +114,47 @@ export default function ExperiencePanel() {
           <MdAdd /> New
         </button>
       </div>
+
+      {/* Section heading shown above the timeline on the live site */}
+      <form
+        onSubmit={handleHeadingSave}
+        className="flex flex-col gap-4 rounded-xl border border-line/60 bg-line/20 p-5"
+      >
+        <h3 className="font-bold text-ink">Section Heading</h3>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field
+            label="Heading"
+            value={heading}
+            onChange={(e) => setHeading(e.target.value)}
+            placeholder="Experiences(3 years)"
+          />
+          <Field
+            label="Badge"
+            value={badge}
+            onChange={(e) => setBadge(e.target.value)}
+            placeholder="Overall 3 Years Experiences"
+          />
+        </div>
+
+        <div className="flex items-center gap-4">
+          <button
+            type="submit"
+            disabled={savingHeading}
+            className="w-fit rounded-md bg-cyan-neon px-6 py-2 font-bold text-black transition-colors hover:bg-cyan-400 disabled:opacity-50"
+          >
+            {savingHeading ? "Saving…" : "Save"}
+          </button>
+          {headingStatus.status && (
+            <span
+              role="status"
+              className={`text-sm ${headingStatus.isError ? "text-red-400" : "text-cyan-neon"}`}
+            >
+              {headingStatus.status}
+            </span>
+          )}
+        </div>
+      </form>
 
       <div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -108,18 +172,19 @@ export default function ExperiencePanel() {
                   {exp.kind === "education" ? "Education" : "Work"}
                 </span>
 
-                <div className="flex shrink-0 gap-1 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+                {/* Always visible on touch — hover reveal only where a pointer exists */}
+                <div className="flex shrink-0 gap-1 transition-opacity lg:opacity-0 lg:group-hover:opacity-100 lg:focus-within:opacity-100">
                   <button
                     onClick={() => handleEdit(exp)}
                     aria-label={`Edit ${exp.role}`}
-                    className="grid h-8 w-8 place-items-center rounded-md text-muted transition-colors hover:bg-line/40 hover:text-cyan-neon"
+                    className="grid h-9 w-9 place-items-center lg:h-8 lg:w-8 rounded-md text-muted transition-colors hover:bg-line/40 hover:text-cyan-neon"
                   >
                     <MdEdit size={17} />
                   </button>
                   <button
                     onClick={() => handleDelete(exp.id)}
                     aria-label={`Delete ${exp.role}`}
-                    className="grid h-8 w-8 place-items-center rounded-md text-muted transition-colors hover:bg-line/40 hover:text-red-500"
+                    className="grid h-9 w-9 place-items-center lg:h-8 lg:w-8 rounded-md text-muted transition-colors hover:bg-line/40 hover:text-red-500"
                   >
                     <MdDelete size={17} />
                   </button>

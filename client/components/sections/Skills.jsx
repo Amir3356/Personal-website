@@ -1,6 +1,6 @@
 "use client";
 
-import { skillGroups } from "@/lib/data";
+import { skillGroups } from "@/utils/data";
 import Reveal from "@/components/ui/Reveal";
 
 export default function Skills() {

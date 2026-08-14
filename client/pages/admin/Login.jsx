@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { MdVisibility, MdVisibilityOff, MdPersonOutline, MdLockOutline } from "react-icons/md";
-import { api, setToken } from "@/lib/api";
-
-export default function Login({ onSuccess }) {
+export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -14,9 +12,8 @@ export default function Login({ onSuccess }) {
     setError("");
     setBusy(true);
     try {
-      const { token } = await api.login(email, password);
-      setToken(token);
-      onSuccess();
+      // The server sets an httpOnly session cookie; nothing to store here.
+      await onLogin(email, password);
     } catch (err) {
       setError(err.message);
     } finally {

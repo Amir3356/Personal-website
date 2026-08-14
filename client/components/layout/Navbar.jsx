@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { gsap, useGSAP, ScrollTrigger, onPreloaderDone } from "@/lib/gsap";
-import { navLinks, site } from "@/lib/data";
+import { gsap, useGSAP, ScrollTrigger, onPreloaderDone } from "@/utils/gsap";
+import { navLinks, site } from "@/utils/data";
 import { scrollToSection } from "@/components/providers/SmoothScroll";
 
 export default function Navbar() {

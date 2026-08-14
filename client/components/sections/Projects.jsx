@@ -2,12 +2,22 @@
 
 import { useRef, useState, useEffect } from "react";
 
-import { gsap, useGSAP, ScrollTrigger } from "@/lib/gsap";
-import { projects } from "@/lib/data";
-import { api } from "@/lib/api";
-import { assetUrl } from "@/lib/useSettings";
+import { gsap, useGSAP, ScrollTrigger } from "@/utils/gsap";
+import { projects } from "@/utils/data";
+import { api } from "@/services";
+import { assetUrl } from "@/hooks/useSettings";
+import Modal from "@/components/ui/Modal";
 
-function ProjectCard({ project }) {
+/**
+ * A URL typed without a scheme ("github.com/me/repo") would be treated as a
+ * path relative to the site, so add https:// when it's missing.
+ */
+function normalizeUrl(url) {
+  const trimmed = url.trim();
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+}
+
+function ProjectCard({ project, onView }) {
   const card = useRef(null);
   // { rx, ry } quickTo setters, created once the card mounts
   const quick = useRef(null);
@@ -83,15 +93,14 @@ function ProjectCard({ project }) {
             </li>
           ))}
         </ul>
-        <a
-          href={project.href}
-          target="_blank"
-          rel="noreferrer"
+        <button
+          type="button"
+          onClick={() => onView(project)}
           className="mt-6 inline-flex w-fit cursor-pointer items-center gap-1.5 text-sm font-medium text-violet-neon transition-colors duration-300 group-hover:text-cyan-neon"
         >
           View Details
           <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-        </a>
+        </button>
       </div>
     </div>
   );
@@ -101,13 +110,16 @@ export default function Projects() {
   const root = useRef(null);
   // Falls back to the bundled list so the grid still renders if the API is down.
   const [items, setItems] = useState(projects);
+  const [active, setActive] = useState(null);
 
   useEffect(() => {
     let active = true;
     api
       .getProjects()
       .then((data) => {
-        if (active && Array.isArray(data) && data.length) setItems(data);
+        // Trust any array the API returns, including an empty one — bailing on
+        // `data.length` would leave deleted projects on screen forever.
+        if (active && Array.isArray(data)) setItems(data);
       })
       .catch(() => {
         /* keep the fallback */
@@ -148,12 +160,49 @@ export default function Projects() {
           My Projects
         </h2>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((project) => (
-            <ProjectCard key={project.id || project.title} project={project} />
-          ))}
-        </div>
+        {items.length > 0 ? (
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((project) => (
+              <ProjectCard
+                key={project.id || project.title}
+                project={project}
+                onView={setActive}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="mt-14 text-center text-muted">No projects to show yet.</p>
+        )}
       </div>
+
+      <Modal
+        open={Boolean(active)}
+        onClose={() => setActive(null)}
+        title={active?.title || "Project"}
+      >
+        {active && (
+          /* Text-only by design — the card already shows the image, summary and
+             tags — plus the project link, which has nowhere else to appear. */
+          <div className="flex flex-col gap-5">
+            {/* overflow-wrap handles long words; the link below gets the same
+                treatment so a pasted URL can't widen the dialog. */}
+            <p className="text-sm leading-relaxed break-words whitespace-pre-line text-ink">
+              {active.detail?.trim() || "No further details have been added for this project yet."}
+            </p>
+
+            {active.href?.trim() && (
+              <a
+                href={normalizeUrl(active.href)}
+                target="_blank"
+                rel="noreferrer"
+                className="w-fit max-w-full font-mono text-xs tracking-wider break-all text-cyan-neon uppercase hover:underline"
+              >
+                Open project →
+              </a>
+            )}
+          </div>
+        )}
+      </Modal>
     </section>
   );
 }

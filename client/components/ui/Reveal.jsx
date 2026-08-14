@@ -2,7 +2,7 @@
 
 import { createElement, useMemo } from "react";
 import * as motionReact from "motion/react";
-import { easeOut, fadeUp } from "@/lib/motion";
+import { easeOut, fadeUp } from "@/utils/motion";
 
 const { motion, useReducedMotion } = motionReact;
 

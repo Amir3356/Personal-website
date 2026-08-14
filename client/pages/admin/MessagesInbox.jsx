@@ -13,8 +13,8 @@ import {
   MdArrowUpward,
   MdArrowDownward,
 } from "react-icons/md";
-import { api } from "@/lib/api";
-import Modal from "./Modal";
+import { api } from "@/services";
+import Modal from "@/components/ui/Modal";
 
 const columnHelper = createColumnHelper();
 
@@ -132,7 +132,7 @@ export default function MessagesInbox() {
                 }}
                 aria-label={`View message from ${msg.name}`}
                 title="View message"
-                className="p-2 text-muted transition-colors hover:text-cyan-neon"
+                className="p-2.5 text-muted transition-colors hover:text-cyan-neon sm:p-2"
               >
                 <MdVisibility size={18} />
               </button>
@@ -143,7 +143,7 @@ export default function MessagesInbox() {
                 }}
                 aria-label={`Delete message from ${msg.name}`}
                 title="Delete"
-                className="p-2 text-muted transition-colors hover:text-red-500"
+                className="p-2.5 text-muted transition-colors hover:text-red-500 sm:p-2"
               >
                 <MdDelete size={18} />
               </button>

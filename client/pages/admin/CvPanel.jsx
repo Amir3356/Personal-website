@@ -1,42 +1,32 @@
-import { useState, useEffect, useRef } from "react";
-import { api } from "@/lib/api";
-import UploadField from "./UploadField";
+import { useState } from "react";
+import { api } from "@/services";
+import { useStatus, attempt } from "@/handlers";
+import UploadField from "@/components/ui/UploadField";
 
 export default function CvPanel({ settings, onSaved }) {
   const [cvUrl, setCvUrl] = useState(settings.hero.cvUrl || "");
-  const [status, setStatus] = useState("");
-  const [isError, setIsError] = useState(false);
   const [busy, setBusy] = useState(false);
-  const timerRef = useRef(null);
-
-  // Clear a pending dismiss if the panel unmounts mid-countdown.
-  useEffect(() => () => clearTimeout(timerRef.current), []);
+  const { status, isError, showSuccess, showError, clear } = useStatus();
 
   const handleSave = async (e) => {
     e.preventDefault();
     setBusy(true);
-    setStatus("");
-    clearTimeout(timerRef.current);
+    clear();
 
-    try {
-      const hero = await api.updateHero({ cvUrl });
+    const [hero, error] = await attempt(() => api.updateHero({ cvUrl }));
+    if (error) {
+      showError(error);
+    } else {
       onSaved({ hero });
-      setIsError(false);
-      setStatus("CV uploaded successfully");
-      // Errors stay put; only the success note auto-dismisses.
-      timerRef.current = setTimeout(() => setStatus(""), 4000);
-    } catch (err) {
-      setIsError(true);
-      setStatus(err.message);
-    } finally {
-      setBusy(false);
+      showSuccess("CV uploaded successfully");
     }
+    setBusy(false);
   };
 
   return (
     <form onSubmit={handleSave} className="flex max-w-xl flex-col gap-6">
       <div>
-        <h2 className="font-display text-2xl font-bold">Download CV</h2>
+        <h2 className="font-display text-xl font-bold sm:text-2xl">Download CV</h2>
         <p className="mt-1 text-sm text-muted">
           The file served by the “Download CV” button in your hero.
         </p>

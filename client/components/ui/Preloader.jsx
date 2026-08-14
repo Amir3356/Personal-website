@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { gsap, useGSAP, PRELOADER_DONE_EVENT } from "@/lib/gsap";
-import { site } from "@/lib/data";
+import { gsap, useGSAP, PRELOADER_DONE_EVENT } from "@/utils/gsap";
+import { site } from "@/utils/data";
 
 /**
  * Full-screen intro: a counter climbs to 100 while the name letters

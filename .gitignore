@@ -10,8 +10,10 @@ node_modules/
 dist/
 build/
 
-# Admin-uploaded media (served at runtime, not source)
-client/public/uploads/
+# Admin-uploaded media is written at runtime and not source. Uploads are named
+# `file-<timestamp>.<ext>`, so ignoring that prefix keeps the bundled seed
+# images (amir.png, project covers) tracked alongside them.
+server/uploads/file-*
 
 # Logs
 *.log

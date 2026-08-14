@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap } from "@/lib/gsap";
+import { gsap } from "@/utils/gsap";
 
 /**
  * Button/link that leans toward the cursor and springs back on leave.
