@@ -1,5 +1,4 @@
 import { request } from "@/network/client";
-
 export const experienceService = {
   list: () => request("/api/experience"),
   create: (body) => request("/api/experience", { method: "POST", body }),

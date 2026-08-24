@@ -2,10 +2,11 @@
 
 import { useRef, useState } from "react";
 import { gsap, useGSAP, PRELOADER_DONE_EVENT } from "@/utils/gsap";
-import { site } from "@/utils/data";
+
+const WELCOME_TEXT = "Welcome to My Portfolio";
 
 /**
- * Full-screen intro: a counter climbs to 100 while the name letters
+ * Full-screen intro: a counter climbs to 100 while the welcome letters
  * stagger in, then the curtain sweeps up to reveal the page.
  */
 export default function Preloader() {
@@ -73,10 +74,17 @@ export default function Preloader() {
       aria-hidden
     >
       <div className="preloader-content flex flex-col items-center gap-8 px-6">
-        <h1 className="flex overflow-hidden font-display text-6xl font-extrabold uppercase tracking-tight sm:text-8xl">
-          {site.name.split("").map((letter, i) => (
-            <span key={i} className="preloader-letter inline-block text-gradient">
-              {letter}
+        <h1 className="flex max-w-3xl flex-wrap justify-center gap-x-[0.25em] overflow-hidden font-display text-4xl font-extrabold uppercase tracking-tight sm:text-6xl lg:text-7xl">
+          {WELCOME_TEXT.split(" ").map((word, w) => (
+            <span key={w} className="flex">
+              {word.split("").map((letter, i) => (
+                <span
+                  key={i}
+                  className="preloader-letter inline-block text-gradient"
+                >
+                  {letter}
+                </span>
+              ))}
             </span>
           ))}
         </h1>

@@ -15,7 +15,6 @@ export {
   settingsService,
   uploadService,
 };
-
 export const api = {
   login: authService.login,
   me: authService.me,

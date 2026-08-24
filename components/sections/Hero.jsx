@@ -5,11 +5,26 @@ import { Suspense, lazy } from "react";
 import Typed from "typed.js";
 import { gsap, useGSAP, SplitText, onPreloaderDone } from "@/utils/gsap";
 import { site, hero } from "@/utils/data";
+import { FaGithub, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
 import { useSettings, assetUrl } from "@/hooks/useSettings";
 import MagneticButton from "@/components/ui/MagneticButton";
 import { scrollToSection } from "@/components/providers/SmoothScroll";
 
 const HeroScene = lazy(() => import("@/components/three/HeroScene"));
+
+/** Hero socials: pulled from site.socials by label so links stay in one place. */
+const HERO_SOCIALS = [
+  { label: "GitHub", Icon: FaGithub },
+  { label: "LinkedIn", Icon: FaLinkedin },
+  { label: "Telegram", Icon: FaTelegramPlane },
+]
+  .map(({ label, Icon }) => ({
+    label,
+    Icon,
+    href: site.socials.find((s) => s.label.toLowerCase() === label.toLowerCase())
+      ?.href,
+  }))
+  .filter((s) => s.href);
 
 export default function Hero() {
   const root = useRef(null);
@@ -168,6 +183,23 @@ export default function Hero() {
                 </span>
               </MagneticButton>
             </div>
+
+            {/* Socials */}
+            <ul className="hero-fade mt-9 flex items-center gap-4">
+              {HERO_SOCIALS.map(({ label, href, Icon }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={label}
+                    className="group flex h-11 w-11 items-center justify-center rounded-full border border-line/60 bg-surface/40 text-muted backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-neon/60 hover:text-cyan-neon hover:shadow-[0_0_18px_-4px_var(--color-cyan-neon)]"
+                  >
+                    <Icon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Portrait */}

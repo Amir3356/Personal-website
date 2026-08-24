@@ -23,7 +23,7 @@ export const hero = {
   /** Rotated by the typewriter effect in the hero heading */
   headingHighlights: ["scalable products", "secure products"],
   intro:
-    "Hi, I'm Amir Siraj, a full-stack developer who transforms ideas into powerful and scalable software solutions. I focus on building high-quality applications with clean code, strong performance, and intuitive user experiences.",
+    "Hi, I'm Amir Siraj, a full-stack developer who transforms ideas into powerful and scalable software solutions. I focus on problem-solving, building secure systems, and developing high-quality applications with clean code, strong performance, and intuitive user experiences.",
   /** Drop your CV file at client/public/cv.pdf (or change this path). */
   cvUrl: "/cv.pdf",
 };
@@ -55,7 +55,7 @@ export const skillGroups = [
   {
     title: "Frontend",
     icon: "◈",
-    skills: ["React (Vite)", "React Native (Expo)", "Next.js"],
+    skills: ["React (Vite)", "React Native (Expo)", "Next.js", "Redux Toolkit"],
   },
   {
     title: "Backend Development",
@@ -63,9 +63,9 @@ export const skillGroups = [
     skills: ["Express.js", "Laravel", "REST API", "WebSocket"],
   },
   {
-    title: "Databases, Caching & Queues",
+    title: "Databases",
     icon: "▤",
-    skills: ["PostgreSQL", "MongoDB", "Redis"],
+    skills: ["PostgreSQL", "MongoDB"],
   },
   {
     title: "Object Storage",
@@ -75,12 +75,12 @@ export const skillGroups = [
   {
     title: "DevOps & Infrastructure",
     icon: "◉",
-    skills: ["Docker", "Nginx", "Linux"],
+    skills: ["Docker", "Nginx", "Linux", "GitHub", "Kubernetes", "Grafana", "Prometheus", "Jenkins Pipeline"],
   },
   {
-    title: "Version Control & Collaboration",
+    title: "Caching, Queues, and Event Streaming",
     icon: "◇",
-    skills: ["GitHub"],
+    skills: ["Redis", "RabbitMQ", "Apache Kafka"],
   },
 ];
 

@@ -29,7 +29,7 @@
         "scalable products",
         "Secure Products"
       ],
-      "intro": "Hi, I'm Amir Siraj, a full-stack developer who transforms ideas into powerful and scalable software solutions. I focus on building high-quality applications with clean code, strong performance, and intuitive user experiences.",
+      "intro": "Hi, I'm Amir Siraj, a full-stack developer who transforms ideas into powerful and scalable software solutions. I focus on problem-solving, building secure systems, and developing high-quality applications with clean code, strong performance, and intuitive user experiences.",
       "ctaLabel": "Contact Me"
     },
     "contact": {
@@ -50,6 +50,16 @@
   },
   "messages": [
     {
+      "id": "msg-1786974780551-lxexgf",
+      "name": "Amir Siraj",
+      "email": "amirsiraj1995@gmail.com",
+      "phone": "09386178388",
+      "subject": "nnnnnnnnnnnn",
+      "message": "ssssssss",
+      "read": false,
+      "createdAt": "2026-08-17T13:53:00.551Z"
+    },
+    {
       "id": "msg-1786705055246-52mvy3",
       "name": "Amir",
       "email": "amirsiraj1995@gmail.com",
@@ -68,7 +78,8 @@
       "skills": [
         "React (Vite)",
         "React Native (Expo)",
-        "Next.js"
+        "Next.js",
+        "Redux Toolkit"
       ]
     },
     {
@@ -84,12 +95,11 @@
     },
     {
       "id": "tech-seed-3",
-      "title": "Databases, Caching & Queues",
+      "title": "Databases",
       "icon": "▤",
       "skills": [
         "PostgreSQL",
-        "MongoDB",
-        "Redis"
+        "MongoDB"
       ]
     },
     {
@@ -108,15 +118,22 @@
       "skills": [
         "Docker",
         "Nginx",
-        "Linux"
+        "Linux",
+        "GitHub",
+        "Kubernetes",
+        "Grafana",
+        "Prometheus",
+        "Jenkins Pipeline"
       ]
     },
     {
       "id": "tech-seed-6",
-      "title": "Version Control & Collaboration",
+      "title": "Caching, Queues, and Event Streaming",
       "icon": "◇",
       "skills": [
-        "GitHub"
+        "Redis",
+        "RabbitMQ",
+        "Apache Kafka"
       ]
     }
   ]

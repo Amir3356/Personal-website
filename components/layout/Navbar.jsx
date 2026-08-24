@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { gsap, useGSAP, ScrollTrigger, onPreloaderDone } from "@/utils/gsap";
-import { navLinks, site } from "@/utils/data";
+import { navLinks } from "@/utils/data";
 import { scrollToSection } from "@/components/providers/SmoothScroll";
 
 export default function Navbar() {
@@ -89,7 +89,12 @@ export default function Navbar() {
       >
         <ul className="min-h-0 space-y-1 px-6 pb-2">
           {navLinks.map((link, i) => (
-            <li key={link.href} className={i === 0 ? "pt-4" : ""}>
+            <li
+              key={link.href}
+              className={`${i === 0 ? "pt-4" : ""} ${
+                i === navLinks.length - 1 ? "pb-4" : ""
+              }`}
+            >
               <button
                 onClick={() => go(link.href)}
                 className="block w-full py-3 text-left font-display text-2xl font-bold text-ink"
@@ -98,14 +103,6 @@ export default function Navbar() {
               </button>
             </li>
           ))}
-          <li className="pb-4">
-            <a
-              href={`mailto:${site.email}`}
-              className="block py-3 font-mono text-xs tracking-widest text-cyan-neon uppercase"
-            >
-              {site.email}
-            </a>
-          </li>
         </ul>
       </div>
     </header>
